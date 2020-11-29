@@ -5,8 +5,11 @@ import sys
 
 arguments = sys.argv
 
-TOKEN = 'Nzc4OTkxOTcxMTE2Nzc3NDgy.X7aCzg.CWJ3FCCNNDCPKXfnSrHBbO5VNVU'
-ADMINS = [132843182965653513]
+settings_file = open("settings.txt", "r")
+lines = settings_file.readlines()
+TOKEN = lines[0]
+ADMINS = lines[1:]
+
 
 class MyClient(discord.Client):
     async def on_ready(self):
