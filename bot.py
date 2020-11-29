@@ -2,6 +2,9 @@ import discord
 import random
 import game.game as game
 import sys
+import threading
+import time
+import datetime
 
 arguments = sys.argv
 
@@ -10,8 +13,12 @@ lines = settings_file.readlines()
 TOKEN = lines[0]
 ADMINS = lines[1:]
 
-
 class MyClient(discord.Client):
+
+    def __init__(self):
+        super().__init__()
+        self.ready = False
+
     async def on_ready(self):
         print("Initializing")
         self.randomizer = random.Random()
@@ -23,14 +30,9 @@ class MyClient(discord.Client):
                 await self._announcement("GourmetGame is Online!")
 
     async def on_message(self, message):
-        try:
-            if not self.ready:
-                print("The client is not ready yet!")
-                return
-        except:
+        if not self.ready:
             print("The client is not ready yet!")
             return
-
 
         # don't respond to ourselves
         if message.author == self.user:
@@ -207,11 +209,31 @@ class MyClient(discord.Client):
                                     "       chances - lists pull chances.\n" +
                                     "       leaderboard - lists out players sorted by power.")
                                        
-    
     async def _announcement(self, announcement):
         for channel in self.get_all_channels():
             if channel.name == 'gourmet-game':
                 await channel.send(str(announcement))
+    
+    def timer_function(self):
+        if self.ready:
+            self._announcement("The daily reset has happened! Get ready to play again!")
+            return "****** Daily reset"
+
+date = datetime.datetime
+
+def get_date():
+    return str(date.now()).split(" ")[0]
 
 client = MyClient()
+current_day = get_date()
+
+def threading_function(client):
+    while True:
+        time.sleep(60)
+        if get_date() != current_day:
+            print(str(client.timer_function()))
+
+timer_thread = threading.Thread(target=threading_function, args=[client])
+timer_thread.start()
+
 client.run(TOKEN)

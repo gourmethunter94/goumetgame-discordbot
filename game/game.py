@@ -200,6 +200,7 @@ class Database:
         minutes = 60 - int(current_time[1])
         if minutes >= 60:
             hours += 1
+            minutes = 0
         return "Time until reset: **" + str(hours) + " hours, " + str(minutes) + " minutes**!"
 
     def _random_enemy(self):
