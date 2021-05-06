@@ -86,13 +86,9 @@ class MyClient(discord.Client):
         if power >= 50:
             msg = ""
             try:
-                print("testing 1")
                 special_name = ' '.join(commands[1:]).replace(";", "").replace("'", "").replace('"', "")
-                print("testing 2")
                 if special_name and len(special_name) > 0:
-                    print("testing 3")
                     self.game_instance.edit_special(player_id, special_name)
-                    print("testing 4")
                     msg = "**" + message.author.display_name + "**'s special attack was renamed to **" + special_name + "**!"
                     print("*** " + str(message.author.id) + " renamed their special attack.")
                 else:
