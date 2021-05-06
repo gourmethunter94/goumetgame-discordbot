@@ -82,7 +82,7 @@ class BossManager:
                 'eats some pesto pasta.'
             ], self.randomizer),
             Boss( "Trashcan", 323, 5, 15, [
-                'eats some garbage... meaning it eats !&player&!!',
+                'eats some garbage... meaning it eats &!player!&!',
                 'puts &!player!& in the trashcan!',
                 "tries to eat &!player!& but has to spit them out since they taste too disgusting!",
                 "does trashcan things." 
@@ -113,13 +113,182 @@ class BossManager:
                 "eats some pesto pasta but doesn't like it and starts crying!",
                 "goes to cry to his mommy!",
                 "changes his own diapers!"
+            ], self.randomizer),
+            Boss( "Burger Boi", 2166, 8, 25, [
+                "doesn't even know.",
+                'is silent.',
+                'smirks scornfully, and eats 15 cheese burger babies.',
+                'sends his henchmen from McDonalds after &!player!&!'
+            ],[
+                'is amateur putter.',
+                'asks, "is that even a five start roll?"',
+                "fucking dies of food poisoning because his burgers were actually syrgers.",
+                "cries tears of burger sauce."
+            ], self.randomizer),
+            Boss( "Pepsi Max Can", 2888, 9, 30, [
+                'sprays pepsi all over &!player!&!',
+                'summons 13 legions of pepsi demons to attack &!player!&!',
+                "shuts down &!player!&'s computer!",
+                "cries pepsi tears that deal over 16 million dps. The attacks name is 'yhyy yhyy'!"
+            ], [
+                "doesn't even form any yeast foam!",
+                "tells &!player!&'s mother that &!player!& attacked it!",
+                "gives &!player!& life time pepsi max ban.",
+                "buys RP with 20€."
+            ], self.randomizer),
+            Boss( "Gourmet Hunter", 3686, 10, 50, [
+                'uses the power of eternal gourmet grace; "Gourmet Thousand Year Fever!"',
+                "summons the gourmet legions to destroy &!player!&!",
+                "eats some buff food and gains 15 million attack power and hits &!player!& on the face.",
+                "destroys 13 galaxies via exessive foraging and then cooks powerfull buff food to defeat the evil &!player!&!"
+            ], [
+                "goes to cry in a corner after failing to cook good food.",
+                "tosses himself in a trashcan with his failed cooking creation.",
+                "tries to sustain his gourmet power with filthy cheeseburger but it's not enough.",
+                "eats baked beans."
+            ], self.randomizer),
+            Boss( 'Gourmet "Ultra Mega Special" Hunter', 7372, 12, 90, [
+                'uses the power of the true eternal gourmet grace; "Gourmet Ten Thousand Year Mega Fever!"',
+                "summons the 13 gourmet legions to destroy &!player!&!",
+                "eats some deluxe buff food and gains 155 million attack power and hits &!player!& on the face ten times.",
+                "destroys 133 galaxies via extremely exessive foraging and then cooks super powerfull buff food to defeat the extremely evil &!player!&!"
+            ], [
+                "goes to cry in a corner after failing to cook even remotely good food.",
+                "tosses himself in an extremely large trashcan with his very failed cooking creation.",
+                "tries to sustain his gourmet power with extremely filthy cheeseburger but it's not nearly enough.",
+                "eats ten cans of baked beans."
+            ], self.randomizer),
+            Boss ( 'Gourmet "The True God of Food" Hunter', 14742, 13, 125, [
+                'pulls out an AK-47 and shoots &!player!& to death, yelling "This is my true power!"',
+                "sends cross-continential ballistic missile at &!player!&'s IRL home!",
+                "breaks &!player!& like a kit-kat bar!",
+                "eats cheese burger!",
+                "shows off his 3-Michelin :star: restaurants menu to &!player!&!",
+                "uses attack that can't be explained with words so we're now using images, :point_up: :skull_crossbones: :rofl:"
+            ], [
+                "is actually dead for good.",
+                "eats fifteen-hundred cheese burgers to cheer himself up!",
+                "cooks some pesto-pasta!",
+                "puts some of those uMaam's in his food to cheer himself up after nearly dying!",
+                "goes to China to eat some dog meat, but is put to prison since that is illegal now!",
+                'yells, "I am the gods be damned admin of this game!? How am I losing!?"'
+            ], self.randomizer),
+            Boss ( 'Gourmet "The True God of Food" Hunter, "The True Final Form"', 29484, 14, 165, [
+                'pulls out two AK-47 and shoots &!player!& to death, yelling "This is my truest power!"',
+                "sends cross-dimensional ballistic missile at &!player!&'s IRL home!",
+                "breaks &!player!& like a kit-kat bar!",
+                "eats double cheese burger!",
+                "shows off his 4-Michelin :star: restaurants menu to &!player!&!",
+                "uses attack that can't be explained with words so we're now using images, :point_up: :skull_crossbones: :rofl:",
+                'Says, "Omae no inochi wa mou owatta", and kills &!player!&!'
+            ], [
+                "is actually dead for good.",
+                "eats sixteen-hundred double cheese burgers to cheer himself up!",
+                "cooks some pesto-pasta!",
+                "puts some of those uMaam's in his food to cheer himself up after nearly dying!",
+                "goes to China to eat some dog meat, but is put to prison since that is illegal now!",
+                'yells, "I am the gods be damned admin of this game!? How am I losing!?"',
+                "realizes the food he was eating is actually poisoned!"
+            ], self.randomizer),
+            Boss ( 'Gourmet "The True God of Food" Hunter, "The Truer Final Form"', 58968, 15, 180, [
+                'pulls out three AK-47 and shoots &!player!& to death, yelling "This is my truester power!"',
+                "sends cross-omni-dimensional ballistic missile at &!player!&'s IRL home!",
+                "breaks &!player!& like a kit-kat bar!",
+                "eats triple cheese burger!",
+                "shows off his 5-Michelin :star: restaurants menu to &!player!&!",
+                "uses attack that can't be explained with words so we're now using images, :point_up: :skull_crossbones: :rofl:"
+                'Says, "Omae no inochi wa mou owatta", and kills &!player!&!',
+                "Orders his foodora driver minions to driver over &!player!&!"
+            ], [
+                "is actually dead for good.",
+                "eats seventeen-hundred triple cheese burgers to cheer himself up!",
+                "cooks some pesto-pasta!",
+                "puts some of those uMaam's in his food to cheer himself up after nearly dying!",
+                "goes to China to eat some dog meat, but is put to prison since that is illegal now!",
+                'yells, "I am the gods be damned admin of this game!? How am I losing!?"',
+                "realizes the food he was eating is actually poisoned!",
+                "chokes on the food he was eating!"
+            ], self.randomizer),
+            Boss ( 'Gourmet "The True God of Food" Hunter, "The Truest Final Form"', 117936, 16, 195, [
+                'pulls out four AK-47 and shoots &!player!& to death, yelling "This is my truestest power!"',
+                "sends omnipresent god-like ballistic missile at &!player!&'s IRL home!",
+                "breaks &!player!& like a kit-kat bar!",
+                "eats quadruple cheese burger!",
+                "shows off his 666-Michelin :star: restaurants menu to &!player!&!",
+                "uses attack that can't be explained with words so we're now using images, :point_up: :skull_crossbones: :rofl:"
+                'Says, "Omae no inochi wa mou owatta", and kills &!player!&!',
+                "Orders his foodora driver minions to driver over &!player!&!",
+                "Poisons &!player!&'s food!"
+            ], [
+                "is actually dead for good.",
+                "eats eighteen-hundred quadruple cheese burgers to cheer himself up!",
+                "cooks some pesto-pasta!",
+                "puts some of those uMaam's in his food to cheer himself up after nearly dying!",
+                "goes to China to eat some dog meat, but is put to prison since that is illegal now!",
+                'yells, "I am the gods be damned admin of this game!? How am I losing!?"',
+                "realizes the food he was eating is actually poisoned!",
+                "chokes on the food he was eating!",
+                "starves since he doesn't have any food remaining!"
+            ], self.randomizer),
+            Boss ( 'Tom Nook', 235872, 17, 210, [
+                'gives you a house and makes you pay for it!"',
+                "calls you trash and says he can't accept trash!",
+                "forces his children to work for him while he takes a vacation!",
+                "adds five million bells to your debt!",
+                "identifies your white shark as sea bass.",
+                "forces you to watch Isabell's morning routine.",
+                "snookers &!player!&!"
+            ], [
+                "decides &!player!& must shop at re-tail instead, but &!player!& shops where &!player!& fucking wants to.",
+                "buys a forgery from crazy Redd!",
+                "can't find Timmy and Tommy and has to do some actual work!",
+                "runs into Tortimer and has to pay his rent!",
+                "fails to sell you on Nook Miles!",
+                'fails to sell his turnips in time and loses five million bells!',
+                "explodes!",
+                "tries to claim his right to shoot &!player!& if he wants to, but &!player!& shoots him first!",
+                "starts his isekai adventure with a little help from &!player!&!",
+                "time travels and gets Resetti'd!"
             ], self.randomizer)
         ]
 
-    def fight_boss(self, tier, player_name, attack_method, power, special_attack_text=None):
+        self.event_bosses = {
+            "pirates" : Boss( "Strawface Pirates", 140, 4, 5, [
+                "send their captain **Nibjwt S. Kyddt** to punch &!player!&!",
+                "send their swordsman **Eieibiä Miei** to slice &!player!&!",
+                "send their navigator **Bänu** to steal all &!player!&'s money!",
+                "send their cook **Qubanijw Aäbhu** to kick &!player!&!",
+            ], [
+                'panic as their ship starts to sink!"',
+                'just stand and watch as **Ribt Rbit Xgioowe** does a silly dance with chopstick stuck on his nose.',
+                "try escape with **Debjt**'s magnificent cola cannon motor."
+            ], self.randomizer),
+            "megalodon" : Boss( "Megalodon", 323, 5, 10, [
+                "sneaks up on &!player!& and takes a bite!",
+                "__dun dun dun dun__'s behind &!player!&!",
+                "grows feet and turns into a street sharko to punch &!player!& in the face!",
+                "rams the ship &!player!& is on!",
+            ], [
+                'takes heavy damage!"',
+                'embarasses itself!"',
+                'realizes it is on sweet water and panics!"',
+                'takes a drink if sea water!"'
+            ], self.randomizer)
+        }
+
+        self.missing_no = Boss( "MissingNo", 999999999, 999999999, 1, [
+            "kills &!player!&!"
+        ], [
+            'is confused!"',
+        ], self.randomizer)
+
+    def fight_boss(self, boss_id, player_name, attack_method, power, special_attack_text=None):
         hit_points = 3
         reward = 0
-        boss = self._get_boss(tier)
+        if boss_id.__class__ == int:
+            boss = self._get_boss(boss_id)
+        else:
+            boss = self._get_event_boss(boss_id)
         if boss != None:
             lives = boss.lives
             msg = "**" + player_name + "** begins a fight against the **" + boss.name + "**!"
@@ -130,7 +299,7 @@ class BossManager:
                     rand = self.randomizer.randint(1,10)
                     if rand <= 2:
                         attack = attack * 2
-                        msg += "\n\n**" + player_name + "** uses their special attack; **" + special_attack_text + "**, unleasing power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
+                        msg += "\n\n**" + player_name + "** uses their special attack; **" + special_attack_text + "**, unleashing power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
                     else:
                         msg += "\n\n**" + player_name + "** clashes power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
                 else:
@@ -157,6 +326,12 @@ class BossManager:
             return self.bosses[tier]
         else:
             return None
+    
+    def _get_event_boss(self, name):
+        boss = self.event_bosses.get(name)
+        if boss == None:
+            boss = self.missing_no
+        return boss
 
 class Boss:
     def __init__(self, name, difficulty, lives, reward, attacks, hits, randomizer):

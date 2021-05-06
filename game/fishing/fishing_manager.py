@@ -31,21 +31,32 @@ class FishingManager:
             Fish("Sturgeon", "Eh... it's edible."),
             Fish("Salmon", "Getting actual edible fish in this game is really rare.")
         ]
+        self.events = [
+            Fish("Treasure Map", "Location of a pirate crew's treasure, propably protected by the pirates."),
+            Fish("Nautical Map", 'Nautical map with a note; "The feared Megalodon hunts on these seas!"')
+        ]
     
     def fish(self):
-        rand = self.randomizer.randint(1, 100)
+        rand = self.randomizer.randint(1, 106)
         money = 0
         plays = 0
-        if rand  <= 8:
+        events = []
+        if rand <= 6:
+            fish = self.randomizer.choice(self.events)
+            if fish.name == "Treasure Map":
+                events = ["pirates"]
+            elif fish.name == "Nautical Map":
+                events = ["megalodon"]
+        elif rand  <= 14:
             fish = self.randomizer.choice(self.play_fish)
             plays = fish.value
-        elif rand <= 40:
+        elif rand <= 46:
             fish = self.randomizer.choice(self.money_fish)
             money = fish.value
         else:
             fish = self.randomizer.choice(self.trash_fish)
         message = fish.get_name() + "\n" + fish.get_flavour()
-        return message, money, plays
+        return message, money, plays, events
 
 class Fish:
 

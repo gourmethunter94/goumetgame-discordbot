@@ -1,198 +1,143 @@
-import sqlite3
 import datetime
 import random
-from contextlib import closing
 import game.adventure.adventure_manager as adventure_manager # pylint: disable=no-name-in-module,import-error
 import game.boss.boss_manager as boss_manager # pylint: disable=no-name-in-module,import-error
 import game.fishing.fishing_manager as fishing_manager # pylint: disable=no-name-in-module,import-error
-#connection = sqlite3.connect("database.db")
-#cursor = connection.cursor()
-#cursor.execute('SELECT * FROM users WHERE user_id="asd"')
-#print(cursor.fetchone()==None)
-#cursor.execute('CREATE TABLE users (user_id TEXT, last_played TEXT, plays_left INTEGER, currency INTEGER, power INTEGER)')
-#UPDATE users SET power="51" WHERE user_id="132843182965653513"
+import game.event.event_manager as event_manager # pylint: disable=no-name-in-module,import-error
+import game.database.database as database # pylint: disable=no-name-in-module,import-error
 
-class Database:
+class Game:
 
-    def __init__(self, address):
-        self.address = address
+    def __init__(self, addres):
         self.date = datetime.datetime
         self.randomizer = random.Random()
-        self.enemies = ["the Aqua", "the Lin", "the Nepnep", "the Sawakoji", "the Karin", "the Konakon", "the Chiku", "that guy from mafia", "the Team Rocket", "the Gary Oak", "the Red", "the Alluusio", ",the P0k5", "a Prinny", "a Shroomish", "a Dude", "the Gourmet", "a Golbat", "the Hieno", "the Sana", "a Sanamon", "the Kumiperuna", "the Ukkounen!", "some League of Legends Tilt", "the Rito Freak", "the Riot Phreak", "the Gen Sin Simp Pact", "the Paimon", "an Emergency Food", "your mom", "a Magikarp", "the darkness", "the everlasting empty void of nothingness", "a Bulbasaur", "a Charmander", "a Squirtle"]
-        self.roll_1 = ["Paimon", "Debate Clubi", "Trash", "Stick", "Pebble", "4* Character after already having c6", "5* Character after already having c6", "Random Blue Meteor", "19 Resin", "159 Primogems", "Tomato", "Digimon", "$9 USD", "Gray Parse", "Nothing", "spam mail", "Artifact with wrong main stats", "Moldy Bread", "Diet Water", "DVD Rewinder"]
-        self.roll_2 = ["Dagger", "Sword", "4* Character", "Random Purple Meteor", "PlayStation 5", "X-Box 360", "99$ USD", "iPhone"]
-        self.roll_3 = ["Gun", "5* Character", "Random Golden Meteor", "Nintendo Switch", "AK-47", "999$ USD"]
-        self.roll_4 = ["Venttiili", "Tortellino", "MewOne", "MewThree"]
-        self.roll_5 = ["Dilukki", "MewTwo"]
-        self.roll_table = self.roll_1*10 + self.roll_2*6 + self.roll_3*3 + self.roll_4*2 + self.roll_5
+        self.enemies = ["the Tarion", "a Chilled Bean", "the Aqua", "the Lin", "the Nepnep", "the Sawakoji", "the Karin", "the Konakon", "the Chiku", "that guy from mafia", "the Team Rocket", "the Gary Oak", "the Red", "the Alluusio", ",the P0k5", "a Prinny", "a Shroomish", "a Dude", "the Gourmet", "a Golbat", "the Hieno", "the Sana", "a Sanamon", "the Kumiperuna", "the Ukkounen!", "some League of Legends Tilt", "the Rito Freak", "the Riot Phreak", "the Gen Sin Simp Pact", "the Paimon", "an Emergency Food", "your mom", "a Magikarp", "the darkness", "the everlasting empty void of nothingness", "a Bulbasaur", "a Charmander", "a Squirtle", "Lominsan ERP Catgirl", "Bimbofication Gas of the Synth City"]
+        self.roll_1 = ["Recycled Food", "Paimon", "Debate Clubi", "Trash", "Stick", "Pebble", "4* Character after already having c6", "5* Character after already having c6", "Random Blue Meteor", "19 Resin", "159 Primogems", "Tomato", "Digimon", "$9 USD", "Gray Parse", "Nothing", "spam mail", "Artifact with wrong main stats", "Moldy Bread", "Diet Water", "DVD Rewinder"]
+        self.roll_2 = ["Dagger", "Sword", "4* Character", "Random Purple Meteor", "PlayStation 5", "X-Box 360", "99$ USD", "iPhone", "Green Parse"]
+        self.roll_3 = ["Gun", "5* Character", "Random Golden Meteor", "Nintendo Switch", "AK-47", "999$ USD", "Blue Parse"]
+        self.roll_4 = ["Venttiili", "Tortellino", "MewOne", "MewThree", "Ruben the Norwegian", "Chilled Beans", "Purple Parse"]
+        self.roll_5 = ["Dilukki", "MewTwo", "Schlong Long", "Orange Parse"]
         self.adventure = adventure_manager.AdventureManager(self.randomizer)
         self.bosses = boss_manager.BossManager(self.randomizer)
+        self.event_manager_instance = event_manager.EventManager(self.randomizer, self.bosses, self)
         self.fish = fishing_manager.FishingManager(self.randomizer)
         self.plays_per_day = 3
+        self.database = database.Database(addres, self.event_manager_instance, self._get_date)
 
     def get_player(self, player):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('SELECT * FROM users WHERE user_id="'+player+'"')
-                return cursor.fetchone()
+        return self.database.get_player(player)
     
     def get_players(self):
-        player_ids = []
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                for user_id in cursor.execute('SELECT * FROM users'):
-                    player_ids.append(user_id[0])
-        return player_ids
+        return self.database.get_players()
 
     def get_special(self, player):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('SELECT * FROM specials WHERE user_id="'+player+'"')
-                return cursor.fetchone()
+        return self.database.get_special(player)
     
     def update_nickname(self, player, nickname):
-        both = self.get_nicknames()
-        nicknames = both[0]
-        if player in nicknames:
-            self.edit_nickname(player, nickname)
-        else:
-            self.add_nickname(player, nickname)
+        self.database.update_nickname(player, nickname)
 
     def get_nicknames(self):
-        userids = []
-        nicknames = []
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                results = cursor.execute('SELECT * FROM nicknames')
-                for row in results:
-                    userids.append(str(row[0]))
-                    nicknames.append(row) 
-        return userids, nicknames
+        return self.database.get_nicknames()
 
     def get_adventure(self, player):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('SELECT * FROM adventures WHERE user_id="' + player + '"')
-                return cursor.fetchone()
+        return self.database.get_adventure(player)
 
     def get_fishing(self, player):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('SELECT * FROM fishing WHERE user_id="' + str(player) + '"')
-                return cursor.fetchone()
+        return self.database.get_fishing(player)
     
     def edit_fishing(self, player, amount):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('UPDATE fishing SET baits=' + str(amount) + ' WHERE user_id="' + str(player) + '"')
-                connection.commit()
+        self.database.edit_fishing(player, amount)
     
     def add_fishing(self, player, amount):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('INSERT INTO fishing VALUES ("' + str(player) + '",' + str(amount) + ')')
-                connection.commit()
+        self.database.add_fishing(player, amount)
 
     def get_extra_plays(self, player):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('SELECT * FROM extra_plays WHERE user_id="' + str(player) + '"')
-                return cursor.fetchone()
+        return self.database.get_extra_plays(player)
     
     def edit_extra_plays(self, player, amount):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('UPDATE extra_plays SET amount=' + str(amount) + ' WHERE user_id="' + str(player) + '"')
-                connection.commit()
+        self.database.edit_extra_plays(player, amount)
     
     def add_extra_plays(self, player, amount):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('INSERT INTO extra_plays VALUES ("' + str(player) + '",' + str(amount) + ')')
-                connection.commit()
+        self.database.add_extra_plays(player, amount)
 
     def get_bosses(self, player):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('SELECT * FROM bosses WHERE user_id="' + player + '"')
-                return cursor.fetchone()
+        return self.database.get_bosses(player)
 
     def edit_adventure(self, player):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('UPDATE adventures SET last_adventure="' + str(self._get_date()) + '" WHERE user_id="' + player + '"')
-                connection.commit()
+        self.database.edit_adventure(player)
     
     def edit_bosses(self, player, tier):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('UPDATE bosses SET last_attempt="' + str(self._get_date()) + '", tier=' + str(tier) + ' WHERE user_id="' + player + '"')
-                connection.commit()
+        self.database.edit_bosses(player, tier)
 
     def add_adventure(self, player):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('INSERT INTO adventures VALUES ("' + str(player) + '","' + str(self._get_date()) + '")')
-                connection.commit()
+        self.database.add_adventure(player)
 
     def add_bosses(self, player):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('INSERT INTO bosses VALUES ("' + str(player) + '","' + str(self._get_date()) + '",0)')
-                connection.commit()
+        self.database.add_bosses(player)
 
     def edit_nickname(self, player, nickname):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('UPDATE nicknames SET nickname="' + str(nickname) + '" WHERE user_id="' + player + '"')
-                connection.commit()
+        self.database.edit_nickname(player, nickname)
     
     def add_nickname(self, player, nickname):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('INSERT INTO nicknames VALUES ("' + str(player) + '","' + str(nickname) + '")')
-                connection.commit()
+        self.database.add_nickname(player, nickname)
 
     def add_player(self, player):
-        if self.get_player(player) == None:
-            with closing(sqlite3.connect(self.address)) as connection:
-                with closing(connection.cursor()) as cursor:
-                    cursor.execute('INSERT INTO users VALUES ("' + player + '","' + self._get_date() + '", ' + str(self.plays_per_day) + ', 0, 6)')
-                    connection.commit()
-                    return True
-        else:
-            return False
+        return self.database.add_player(player)
     
     def add_special(self, player):
-        if self.get_special(player) == None:
-            with closing(sqlite3.connect(self.address)) as connection:
-                with closing(connection.cursor()) as cursor:
-                    cursor.execute('INSERT INTO specials VALUES ("' + player + '", "Special Attack")')
-                    connection.commit()
+        self.database.add_special(player)
     
     def edit_special(self, player, special_attack):
-        if self.get_special(player):
-            with closing(sqlite3.connect(self.address)) as connection:
-                with closing(connection.cursor()) as cursor:
-                    cursor.execute('UPDATE specials SET special_attack="' + str(special_attack) + '" WHERE user_id="' + player + '"')
-                    connection.commit()
+        self.database.edit_special(player, special_attack)
+
+    def _add_event(self, player, event_name):
+        self.database._add_event(player, event_name)
+    
+    def get_events(self, player):
+        return self.database.get_events(player)
+
+    def has_event(self, player, event_name):
+        return self.database.has_event(player, event_name)
+
+    def delete_event(self, player, event_name):
+        self.database.delete_event(player, event_name)
 
     def _plays_left(self, player):
-        player_data = self.get_player(player)
-        if player_data:
-            return player_data[2]
-        else:
-            return None
+        return self.database._plays_left(player)
     
     def _last_played(self, player):
-        player_data = self.get_player(player)
-        if player_data:
-            return player_data[1]
-        else:
-            return None
+        return self.database._last_played(player)
 
     def _get_date(self):
         return str(self.date.now()).split(" ")[0]
+
+    def update_player(self, player, plays_left, currency, power):
+        return self.database.update_player(player, plays_left, currency, power)
+    
+    def add_currency(self, currency):
+        self.database.add_currency(currency)
+    
+    def add_currency_to(self, currency, player):
+        self.database.add_currency_to(currency, player)
+
+    def add_plays(self, plays):
+        self.database.add_plays(plays)
+
+    def add_event(self, event_name):
+        return self.databse.add_event(event_name)
+
+    def leaderboard(self):
+        return self.database.leaderboard()
+    
+    def events(self, player, nickname):
+        message = "**" + nickname + "** has the following events:\n"
+        events = self.get_events(player)
+        if len(list(events)) > 0:
+            for event in list(events):
+                message += "    **" + str(events.get(event)) + "** instances of **" + event + "** event!\n"
+        else:
+            message = "**" + nickname + "** has no events available!"
+        return message
 
     def get_time_until_reset(self):
         current_time = str(datetime.datetime.now()).split(" ")[1].split(".")[0].split(":")
@@ -205,16 +150,6 @@ class Database:
 
     def _random_enemy(self):
         return self.randomizer.choice(self.enemies)
-    
-    def update_player(self, player, plays_left, currency, power):
-        if self.get_player(player):
-            with closing(sqlite3.connect(self.address)) as connection:
-                with closing(connection.cursor()) as cursor:
-                    cursor.execute('UPDATE users SET last_played="' + self._get_date() + '", plays_left=' + str(plays_left) + ', currency=' + str(currency) + ', power=' + str(power) + ' WHERE user_id="' + player + '"')
-                    connection.commit()
-                    return True
-        else:
-            return False
 
     def play_adventure(self, player, nickname):
         message = ""
@@ -360,6 +295,10 @@ class Database:
                 else:
                     self.edit_fishing(player, (int(fishing_data[1]) + baits))
                 message += "\n**" + nickname + "** finds **" + str(baits) + "** baits!"
+            rand = self.randomizer.randint(1,6)
+            if rand == 1:
+                self._add_event(str(player), "personaltrainer")
+                message += "\n**" + nickname + "** gains access to **personaltrainer** event."
 
         else:
             message = "**" + nickname + "** doesn't have any plays left today!"
@@ -369,15 +308,36 @@ class Database:
     def _attack_roll(self, power):
         return (1 + self.randomizer.randint(1, max(2, int(power/2)))) * max(1, int(power/4))
  
-    def roll(self, player, nickname):
-        message = ""
+    def _roll(self):
+        random_int = self.randomizer.randint(0, 100000)
+        if random_int < 3000:
+            return self.randomizer.choice(self.roll_5)
+        elif random_int < 8000:
+            return self.randomizer.choice(self.roll_4)
+        elif random_int < 20000:
+            return self.randomizer.choice(self.roll_3)
+        elif random_int < 48000:
+            return self.randomizer.choice(self.roll_2)
+        else:
+            return self.randomizer.choice(self.roll_1)
+
+    def roll(self, player, nickname, roll_all):
+        if roll_all:
+            message = "**" + nickname + "** spends all their monies to roll!\n"
+        else:
+            message = ""
         player_data = self.get_player(player)
         if player_data == None:
             self.add_player(player)
             player_data = self.get_player(player_data)
         currency = int(player_data[3])
         if currency >= 5:
-            currency -= 5
+            if roll_all:
+                rolls = int(currency / 5)
+                currency = currency % 5
+            else:
+                rolls = 1
+                currency -= 5
             plays_left = int(player_data[2])
             last_played = player_data[1]
             if last_played != self._get_date():
@@ -385,14 +345,26 @@ class Database:
             else:
                 plays_left = int(player_data[2])
             power = int(player_data[4])
-            item = self.randomizer.choice(self.roll_table)
-            value = self._get_item_value(item)
-            power += value
-            message = "**" + nickname + "** spent **5** monies rolling and got... ** " + item + "** ( "
-            for stars in range(0, value):
-                message += ":star:"
-            message += " )"
-            message += "\nThe **" + item + "** increases **" + nickname + "'s** power by **" + str(value) + "**!"
+            base_power = power
+            for _ in range(0, rolls):
+                item = self._roll()
+                value = self._get_item_value(item)
+                power += value
+                if roll_all == False:
+                    message = "**" + nickname + "** spent **5** monies rolling and got... ** " + item + "** ( "
+                else:
+                    message += "\n**" + nickname + "** rolled and got... ** " + item + "** ( "
+                for _ in range(0, value):
+                    message += ":star:"
+                message += " )"
+                message += "\nThe **" + item + "** increases **" + nickname + "'s** power by **" + str(value) + "**!"
+                if roll_all:
+                    message += "\n"
+            if roll_all:
+                message += "\n**" + nickname + "**'s power increased by **" + str((power-base_power)) + "** in total!"
+                average = (power-base_power) / rolls
+                rate = average - 1.79
+                message += "\nAverage power increase per pull was **" + str(average)[:7] + "** which was **" + str(rate)[:7] + "** ahead of average pull rate."
             if power >= 50 and (not self.get_special(player)):
                 message += "\n**" + nickname + "**'s power has reached above 50! Special attack has been unlocked!"
                 self.add_special(player)
@@ -400,20 +372,32 @@ class Database:
         else:
             message = "**" + nickname + "** doesn't have enough monies to roll!"
         return message
-    
-    def add_currency(self, currency):
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute('UPDATE users SET currency=' + str(currency) + '+currency')
-                connection.commit()
 
-    def add_plays(self, plays):
-        for player_id in self.get_players():
-            extra_plays = self.get_extra_plays(player_id)
-            if extra_plays:
-                self.edit_extra_plays(player_id, (int(extra_plays[1])+plays))
-            else:
-                self.add_extra_plays(player_id, plays)
+    def event(self, player, nickname, event_name):
+        message = ""
+        if self.has_event(player, event_name):
+            message, currency, plays, events = self.event_manager_instance.play_event(player, nickname, event_name)
+            message += "\n\n**" + nickname + "** gains:"
+            if plays > 0:
+                extra_plays = self.get_extra_plays(str(player))
+                if extra_plays:
+                    self.edit_extra_plays(str(player), (int(extra_plays[1])+plays))
+                else:
+                    self.add_extra_plays(str(player), plays)
+                message += "\n    **" + str(plays) + "** extra plays"
+            if currency > 0:
+                self.add_currency_to(currency, str(player))
+                message += "\n    **" + str(currency) + "** monies"
+            if len(events) > 0:
+                for event in events:
+                    self._add_event(str(player), event)
+                    message += "\n    Access to **" + event + "** event"
+            if len(events) == 0 and currency == 0 and plays == 0:
+                    message += "\n    __Nothing__"
+            self.delete_event(player, event_name)
+        else:
+            message = "**" + nickname + "** doesn't have access to the event: **" + event_name + "**!"
+        return message
 
     def status(self, player, nickname):
         message = ""
@@ -454,17 +438,6 @@ class Database:
         message += "\n" + self.get_time_until_reset()
         return message
 
-    def leaderboard(self):
-        message = "**Global list of users sorted by power!**"
-        with closing(sqlite3.connect(self.address)) as connection:
-            with closing(connection.cursor()) as cursor:
-                for row in cursor.execute('SELECT * FROM users LEFT JOIN nicknames ON users.user_id = nicknames.user_id ORDER BY users.power DESC'):
-                    name = str(row[6])
-                    power = str(row[4])
-                    currency = str(row[3])
-                    message += "\n      **" + name + "** with **" + power + "** power and **" + currency + "** monies."
-        return message
-
     def fishing(self, player, nickname, fish_all=False):
         message = ""
         fish_amount = 1
@@ -479,14 +452,15 @@ class Database:
             player_data = self.get_player(player)
 
             fish = []
+            events = []
             money = 0
             plays = 0
 
             if fish_all:
-                fish_amount= fishing_data[1]
+                fish_amount = fishing_data[1]
 
             for fishing in range(0, fish_amount):
-                fish, money_instance, plays_instance = self.fish.fish()
+                fish, money_instance, plays_instance, event = self.fish.fish()
 
                 message += "**" + nickname + "** has caught something while fishing!\nIt is a " + fish
                 
@@ -503,6 +477,7 @@ class Database:
 
                 money += money_instance
                 plays += plays_instance
+                events = events + event
 
                 if fish_all:
                     message += "\n\n"
@@ -517,6 +492,12 @@ class Database:
 
             if fish_all:
                 message += "**" + nickname + "** got **" + str(money) + "** monies and **" + str(plays) + "** plays while fishing!"
+
+            if len(events) > 0:
+                message += "\n\n**" + nickname + "** gains access to following events from fishing:"
+                for event in events:
+                    self._add_event(str(player), event)
+                    message += "\n    Access to **" + event + "** event"
 
             self.update_player(player, plays_left, currency, power)
             self.edit_fishing(player, (int(fishing_data[1]) - fish_amount))

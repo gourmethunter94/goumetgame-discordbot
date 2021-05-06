@@ -63,20 +63,33 @@ class AdventureManager:
             ("Minion", ["shoots at &!player!&'s tower!", "destroys &!player!&'s tower just before enemy team arrives for a gank!", "hits &!player!& with an attack, dealing like 25 damage!"])
         ], self.randomizer)
 
+        limsa_erp = Entity ("Lominsan", [
+            "Catgirl", "Catboy", "Hrothgar"], [
+            ("ERP:er", ["call's &!player!& their mommy!", "snuggle wuggles &!player!&!", "hits on &!player!&!"])
+        ], self.randomizer, ["it"], {"it": "it's"})
+
+        limsa_afk = Entity ("Lominsan", [
+            "Lalafell", "Hyur", "Au Ra"], [
+            ("AFKer", ["is afk next to &!player!&!", "doesn't respond to &!player!&'s messages!", "get's booted from the server next to &!player!&!"])
+        ], self.randomizer)
+
         self.locations = [
             Location("a Goblin Camp", [goblins, goblins, goblins, hobgoblins], ["Barracks", "Chief's Tent", "Arena", "Fight Pit", "loo", "captured ruins", "Shaman's Tent"], self.randomizer),
             Location("an Abandoned Dungeon", [slimes, shadows], ["Torture Chambers", "Deepest Dungeon", '"Waste" room', "solitary confinement cell", "Fight pit", "hidden entrance to the severs", "warden's office"], self.randomizer),
-            Location("the Summoner's Rift", [ranged_minion, ranged_minion, melee_minions, melee_minions, cannon_minions], ["top lane", "mid lane", "bot lane", "blue team jungle", "red team jungle", "river", "red team base", "blue team base", "dragon pit", "baron pit"], self.randomizer)
+            Location("the Summoner's Rift", [ranged_minion, ranged_minion, melee_minions, melee_minions, cannon_minions], ["top lane", "mid lane", "bot lane", "blue team jungle", "red team jungle", "river", "red team base", "blue team base", "dragon pit", "baron pit"], self.randomizer),
+            Location("Limsa Lominsa", [limsa_erp, limsa_afk], ["Market Board", "Side Bench", "Limsa Tree", "Abandoned Zone", "Blue Mage Starter Area", "Aetheryte", "Glitch Pillar"], self.randomizer)
         ]
 
         self.monie_rewards = [
             "a Common Treasure Chest", "a Exquisite Tresure Chest", "a Luxurious Treasure Chest",
             "a Bag of Goodies", "a Beautiful Gem", "some Shiny Coins",
-            "a Diamond", "hundred-million USD", "999$"
+            "a Diamond", "hundred-million USD", "999$",
+            "a Golden Chocobo Feather", "a Silver Chocobo Feather", "an Allagan Tomestone of Poetics"
         ]
 
         self.play_rewards = [
-            "a Hero's Wits", "a Hero's Experience", "a Hero's Advice"
+            "a Hero's Wits", "a Hero's Experience", "a Hero's Advice",
+            "an Allagan Tomestone of Phantasmagoria", "an Allagan Tomestone of Allegory", "an Allagan Tomestone of Revelation"
         ]
     
     def adventure(self, player_name, roll_method, power, special_attack_text=None):
@@ -87,8 +100,9 @@ class AdventureManager:
         baits = 0
         victories = 0
         defeats = 0
+        turn = 0
         while True:
-            rand = self.randomizer.randint(0, 42)
+            rand = self.randomizer.randint(0, max(34, 42 - int(turn / 12)))
             if rand == 0:
                 message += "\n\n" + location.treasure(player_name)
                 message += "\n**" + player_name + "** found **" + self.randomizer.choice(self.play_rewards) + "**!"
@@ -97,33 +111,37 @@ class AdventureManager:
             elif rand < 6:
                 message += "\n\n" + location.treasure(player_name)
                 message += "\n**" + player_name + "** found **" + self.randomizer.choice(self.monie_rewards) + "**!"
-                amount = self.randomizer.randint(1,2)
+                amount = self.randomizer.randint(1,2 + int(turn / 18))
                 monies += amount
                 message += "\n**" + player_name + "** gains **" + str(amount) + "** monies!"
             elif rand < 11:
                 message += "\n\n" + location.treasure(player_name)
-                fish_amount = self.randomizer.randint(2, 4)
+                fish_amount = self.randomizer.randint(2, 4 + int(turn / 14))
                 baits += fish_amount
                 message += "\n**" + player_name + "** found **" + str(fish_amount) + "** fish baits!"
             else:
                 attack = roll_method(power)
-                difficulty = (victories + 1) * max(1, int((victories+1)/2)) * 9 - 4
-                if special_attack_text:
-                    rand = self.randomizer.randint(1,10)
-                    if rand <= 2:
-                        attack = attack * 2
-                        roll_text = "**" + player_name + "** uses special attack; **" + special_attack_text + "**, unleasing power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
+                difficulty = (victories + 1) * max(1, int((victories+1)/2)) * 9 - 5
+                if (power < 200 and power >= 4 * difficulty) or (power < 400 and power >= 2.5 * difficulty) or (power < 600 and power >= difficulty) or (power >= 600 and power >= difficulty * 0.5):
+                    message += "\n**" + player_name + "** is too powerful and swats away any opposition with ease!"
+                    defeated_status = False
+                else:
+                    if special_attack_text:
+                        rand = self.randomizer.randint(1,10)
+                        if rand <= 2:
+                            attack = attack * 2
+                            roll_text = "**" + player_name + "** uses special attack; **" + special_attack_text + "**, unleasing power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
+                        else:
+                            roll_text = "**" + player_name + "** clashes power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
                     else:
                         roll_text = "**" + player_name + "** clashes power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
-                else:
-                    roll_text = "**" + player_name + "** clashes power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
-                defeated_status = True
-                if attack >= difficulty:
-                    defeated_status = False
-                    victory = "defeats"
-                else:
-                    victory = "is defeated by"
-                message += "\n\n" + location.adventure(player_name, roll_text, victory)
+                    defeated_status = True
+                    if attack >= difficulty:
+                        defeated_status = False
+                        victory = "defeats"
+                    else:
+                        victory = "is defeated by"
+                    message += "\n\n" + location.adventure(player_name, roll_text, victory)
                 if defeated_status:
                     if defeats == 2:
                         message += "\n**" + player_name + "** is defeated for the last time for this adventure!"
@@ -133,7 +151,9 @@ class AdventureManager:
                         message += "\n**" + player_name + "** is defeated, **" + str((3-defeats)) + "** defeats left in this adventure!"
                 else:
                     victories += 1
-                    monies += 1
+                    monies += 1 + int(turn / 10)
+                turn += 1
+        message += "\n\nThe adventure lasted **" + str(turn) + "** turns."
         return message, monies, plays, baits
 
 class Entity:
