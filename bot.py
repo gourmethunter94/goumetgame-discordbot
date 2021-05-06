@@ -33,7 +33,8 @@ class MyClient(discord.Client):
             "event":self._event,
             "start":self._start,
             "chances":self._chances,
-            "leaderboard":self._leaderboard
+            "leaderboard":self._leaderboard,
+            "repository":self._repository
         }
         self.ready = False
 
@@ -125,6 +126,9 @@ class MyClient(discord.Client):
             print("*** " + str(message.author.id) + " activated event: " + " ".join(commands[1:]))
             await self._send_message(msg, message.channel)
 
+    async def _repository(self, commands, message):
+        await self._send_message("https://github.com/ollikkarki/goumetgame-discordbot", message.channel)
+
     async def on_ready(self):
         print("Initializing")
         self.randomizer = random.Random()
@@ -209,7 +213,9 @@ class MyClient(discord.Client):
                                     "       status - shows your current status in the game!\n" +
                                     "       special - use to name your special attack (_ex. !gg special Turbo Attack_). Special attack is unlocked after reaching 50 power.\n" +
                                     "       chances - lists pull chances.\n" +
-                                    "       leaderboard - lists out players sorted by power.\n\n" +
+                                    "       leaderboard - lists out players sorted by power.\n" +
+                                    "\n" +
+                                    "       repository - sends a link to the game's github repository\n\n" +
                                     "**Warning: whenever you do an action in game, your current nickname is stored and may be displayed in other servers with access to the game.**", message.channel)
 
     async def _send_message(self, message, channel):
