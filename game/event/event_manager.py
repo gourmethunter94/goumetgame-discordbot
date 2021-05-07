@@ -7,7 +7,8 @@ class EventManager:
             "megalodon":self._megalodon,
             "weekend":self._weekend,
             "personaltrainer":self._personaltrainer,
-            "mysteriousmap":self._mysterious_map
+            "mysteriousmap":self._mysterious_map,
+            "bosstoken":self._boss_token
         }
         self._trainers = [
             ["Pekka Pouta", ["shares wisdom of the ancients with &!player!&.", "teaches &!player!& how the tell the weather.", "teaches some sick dance moves to &!player!&."], "his"],
@@ -27,6 +28,10 @@ class EventManager:
         else:
             return "The event: **" + event_name + "** has not yet been implemented!", 0, 0, []
     
+    def _boss_token(self, player, nickname):
+        message, currency = self.game.play_bosses(player, nickname, boss_token=True)
+        return message, currency, 0, []
+
     def _mysterious_map(self, player, nickname):
         message = ""
         player_data = self.game.get_player(player)

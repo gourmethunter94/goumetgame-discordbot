@@ -96,10 +96,14 @@ class Database:
                 cursor.execute('UPDATE adventures SET last_adventure="' + str(self._get_date()) + '" WHERE user_id="' + player + '"')
                 connection.commit()
     
-    def edit_bosses(self, player, tier):
+    def edit_bosses(self, player, tier, edit_time=True):
         with closing(sqlite3.connect(self.addres)) as connection:
             with closing(connection.cursor()) as cursor:
-                cursor.execute('UPDATE bosses SET last_attempt="' + str(self._get_date()) + '", tier=' + str(tier) + ' WHERE user_id="' + player + '"')
+                if edit_time:
+                    time_string = 'last_attempt="' + str(self._get_date()) + '", '
+                else:
+                    time_string = ""
+                cursor.execute('UPDATE bosses SET ' + time_string + 'tier=' + str(tier) + ' WHERE user_id="' + player + '"')
                 connection.commit()
 
     def add_adventure(self, player):

@@ -20,7 +20,7 @@ class MyClient(discord.Client):
 
     def __init__(self):
         super().__init__()
-        self._unregistered_commands = ["start", "chances", "leaderboard"]
+        self._unregistered_commands = ["start", "chances", "leaderboard", "repository"]
         self._commands = {
             "play":self._play,
             "adventure":self._adventure,

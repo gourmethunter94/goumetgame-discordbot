@@ -66,8 +66,8 @@ class Game:
     def edit_adventure(self, player):
         self.database.edit_adventure(player)
     
-    def edit_bosses(self, player, tier):
-        self.database.edit_bosses(player, tier)
+    def edit_bosses(self, player, tier, edit_time=True):
+        self.database.edit_bosses(player, tier, edit_time)
 
     def add_adventure(self, player):
         self.database.add_adventure(player)
@@ -203,10 +203,10 @@ class Game:
 
         return message
 
-    def play_bosses(self, player, nickname):
+    def play_bosses(self, player, nickname, boss_token=False):
         message = ""
         last_boss = self.get_bosses(player)
-        if last_boss == None or last_boss[1] != self._get_date():
+        if last_boss == None or last_boss[1] != self._get_date() or boss_token:
             reward = 0
             if last_boss == None:
                 self.add_bosses(player)
@@ -234,17 +234,20 @@ class Game:
 
             if reward > 0:
                 message += "**" + nickname + "** gains **" + str(reward) + "** monies for defeating the boss!"
-                self.edit_bosses(player, boss_tier + 1)
+                self.edit_bosses(player, boss_tier + 1, not boss_token)
             else:
                 message += "**" + nickname + "** was defeated by the boss!"
-                self.edit_bosses(player, boss_tier)
-
-            self.update_player(player, plays_left, (currency+reward), power)
+                self.edit_bosses(player, boss_tier, not boss_token)
+            if not boss_token:
+                self.update_player(player, plays_left, (currency+reward), power)
         else:
             message += "**" + nickname + "** has fought a boss already today, try again tomorrow!"
             message += "\n" + self.get_time_until_reset()
 
-        return message
+        if not boss_token:
+            return message
+        else:
+            return message, reward
 
     def play(self, player, nickname):
         message = ""
