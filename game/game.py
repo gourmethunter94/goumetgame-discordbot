@@ -129,6 +129,12 @@ class Game:
     def leaderboard(self):
         return self.database.leaderboard()
     
+    def get_finisher(self, player):
+        return self.database.get_finisher(player)
+
+    def update_finisher(self, player, finisher_name):
+        self.database.update_finisher(player, finisher_name)
+
     def events(self, player, nickname):
         message = "**" + nickname + "** has the following events:\n"
         events = self.get_events(player)
@@ -229,7 +235,8 @@ class Game:
                 special_attack_text = special[1]
             else:
                 special_attack_text = None
-            msg, reward = self.bosses.fight_boss(boss_tier, nickname, self._attack_roll, power, special_attack_text)
+            finishing_move_text = self.get_finisher(player)
+            msg, reward = self.bosses.fight_boss(boss_tier, nickname, self._attack_roll, power, special_attack_text, finishing_move_text)
             message += msg + "\n\n"
 
             if reward > 0:
@@ -371,6 +378,9 @@ class Game:
             if power >= 50 and (not self.get_special(player)):
                 message += "\n**" + nickname + "**'s power has reached above 50! Special attack has been unlocked!"
                 self.add_special(player)
+            if power >= 400 and (not self.get_finisher(player)):
+                message += "\n**" + nickname + "**'s power has reached above 400! Finishing move has been unlocked!"
+                self.update_finisher(player, "Finisher Move")
             self.update_player(player, plays_left, currency, power)
         else:
             message = "**" + nickname + "** doesn't have enough monies to roll!"

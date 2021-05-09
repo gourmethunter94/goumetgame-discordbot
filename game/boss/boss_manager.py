@@ -19,7 +19,7 @@ class BossManager:
                     'retaliates by yelling, "Nugget Attack!"',
                     'yells, "Activating Phase 3!"',
                     'says "Hesburger has better mayonnaise than McDonalds!"'
-                ], self.randomizer
+                ], "tosses several hundred million burgers at &!player!&!", self.randomizer
             ),
             Boss( "Pesto Pasta", 33, 2, 5, [
                     'yells, "Carbonara Attack!"',
@@ -31,7 +31,7 @@ class BossManager:
                     "kills all it's enemies in it's imagination!",
                     'gets really angry!',
                     'tries to prepare "Explosion Nuke Attack 5", but realizes it does not have such a thing!'
-                ], self.randomizer
+                ], "sprays pesto sauce all over &!player!& with extreme accuracy and deadly skill!", self.randomizer
             ),
             Boss( "Sprite Overlord", 57, 3, 5, [
                     'uses "Citrus Fresh Breeze" to attack &!player!&!',
@@ -43,7 +43,7 @@ class BossManager:
                     'tries to use "Multiverse Bomb Slayer Counter" but fails!',
                     'gets a headache!',
                     'yells "Baka-yaro!"'
-                ], self.randomizer
+                ], "takes a refreshing sip of delicious sprite drink and smirks at &!player!&!", self.randomizer
             ),
             Boss( "MiHoYo's CEO", 100, 3, 10, [
                     'pulls attack from Gacha game to attack &!player!&!',
@@ -55,7 +55,7 @@ class BossManager:
                     'fires &!player!& from the company!',
                     "doesn't know so he throws something at &!player!&!",
                     'eats his own papers!'
-                ], self.randomizer
+                ], "counts all the money &!player!& has wasted on the game and laughs!", self.randomizer
             ),
             Boss( "Postman", 140, 4, 10, [
                     'insults you from the letter box!',
@@ -68,7 +68,7 @@ class BossManager:
                     "writes hatemail on the &!player!&'s name and delivers them to the &!player!&'s neighbours!",
                     "delivers &!player!&'s mail a week late!",
                     "delivers extreme amount of advertisements to &!player!&!"
-                ], self.randomizer
+                ], "gives fake arrival of delivery note to &!player!&!", self.randomizer
             ),
             Boss( "Galaxy Master", 247, 4, 10, [
                 'shoots &!player!& with a gun, but it is a space gun!',
@@ -80,7 +80,7 @@ class BossManager:
                 "just doesn't remember.",
                 'just like... beats up everyone around himself with like... godly powers.',
                 'eats some pesto pasta.'
-            ], self.randomizer),
+            ], "finally masters the galaxy and launches it (the whole galaxy) at &!player!&!", self.randomizer),
             Boss( "Trashcan", 323, 5, 15, [
                 'eats some garbage... meaning it eats &!player!&!',
                 'puts &!player!& in the trashcan!',
@@ -91,7 +91,7 @@ class BossManager:
                 'spills out trash all over the place!',
                 'eats some delicious trashfood!',
                 'realizes it is a trash can and gets depressed!'
-            ], self.randomizer),
+            ], "realizes someone else belongs in the trash even more than it does, the one being &!player!&!", self.randomizer),
             Boss( "League of Legends Player", 520, 5, 15, [
                 'spam mastery 7 emote at &!player!&',
                 'writes lots of questionmarks in the chat!',
@@ -102,7 +102,7 @@ class BossManager:
                 'starts shouting at his team mates in all chat.',
                 'wants to 9x all his whole team!',
                 'blames the lag!'
-            ], self.randomizer),
+            ], "finishes his build 12 minutes in to the game because &!player!& is a feeder!", self.randomizer),
             Boss( "Big Boi", 780, 6, 15, [
                 'is a very big boi!',
                 "does some big boi things to &!player!&'s face!",
@@ -113,7 +113,7 @@ class BossManager:
                 "eats some pesto pasta but doesn't like it and starts crying!",
                 "goes to cry to his mommy!",
                 "changes his own diapers!"
-            ], self.randomizer),
+            ], "tosses his paficier at &!player!&!", self.randomizer),
             Boss( "Burger Boi", 2166, 8, 25, [
                 "doesn't even know.",
                 'is silent.',
@@ -124,7 +124,7 @@ class BossManager:
                 'asks, "is that even a five start roll?"',
                 "fucking dies of food poisoning because his burgers were actually syrgers.",
                 "cries tears of burger sauce."
-            ], self.randomizer),
+            ], "eats 40 burger babies while his henchmen make &!player!& watch as he eats!", self.randomizer),
             Boss( "Pepsi Max Can", 2888, 9, 30, [
                 'sprays pepsi all over &!player!&!',
                 'summons 13 legions of pepsi demons to attack &!player!&!',
@@ -135,7 +135,7 @@ class BossManager:
                 "tells &!player!&'s mother that &!player!& attacked it!",
                 "gives &!player!& life time pepsi max ban.",
                 "buys RP with 20€."
-            ], self.randomizer),
+            ], ' yells "Pep Pu Si Ma Ku Si!" and sprays Pepsi all over &!player!&!', self.randomizer),
             Boss( "Gourmet Hunter", 3686, 10, 50, [
                 'uses the power of eternal gourmet grace; "Gourmet Thousand Year Fever!"',
                 "summons the gourmet legions to destroy &!player!&!",
@@ -146,7 +146,7 @@ class BossManager:
                 "tosses himself in a trashcan with his failed cooking creation.",
                 "tries to sustain his gourmet power with filthy cheeseburger but it's not enough.",
                 "eats baked beans."
-            ], self.randomizer),
+            ], "Reveals the ancient power of Gourmet-fu and crushes &!player!&!", self.randomizer),
             Boss( 'Gourmet "Ultra Mega Special" Hunter', 7372, 12, 90, [
                 'uses the power of the true eternal gourmet grace; "Gourmet Ten Thousand Year Mega Fever!"',
                 "summons the 13 gourmet legions to destroy &!player!&!",
@@ -157,7 +157,7 @@ class BossManager:
                 "tosses himself in an extremely large trashcan with his very failed cooking creation.",
                 "tries to sustain his gourmet power with extremely filthy cheeseburger but it's not nearly enough.",
                 "eats ten cans of baked beans."
-            ], self.randomizer),
+            ], "Reveals the true ancient power of Gourmet-fu and crushes &!player!&!", self.randomizer),
             Boss ( 'Gourmet "The True God of Food" Hunter', 14742, 13, 125, [
                 'pulls out an AK-47 and shoots &!player!& to death, yelling "This is my true power!"',
                 "sends cross-continential ballistic missile at &!player!&'s IRL home!",
@@ -172,7 +172,7 @@ class BossManager:
                 "puts some of those uMaam's in his food to cheer himself up after nearly dying!",
                 "goes to China to eat some dog meat, but is put to prison since that is illegal now!",
                 'yells, "I am the gods be damned admin of this game!? How am I losing!?"'
-            ], self.randomizer),
+            ], "Reveals the truer ancient power of Gourmet-fu and crushes &!player!&!", self.randomizer),
             Boss ( 'Gourmet "The True God of Food" Hunter, "The True Final Form"', 29484, 14, 165, [
                 'pulls out two AK-47 and shoots &!player!& to death, yelling "This is my truest power!"',
                 "sends cross-dimensional ballistic missile at &!player!&'s IRL home!",
@@ -189,7 +189,7 @@ class BossManager:
                 "goes to China to eat some dog meat, but is put to prison since that is illegal now!",
                 'yells, "I am the gods be damned admin of this game!? How am I losing!?"',
                 "realizes the food he was eating is actually poisoned!"
-            ], self.randomizer),
+            ], "Reveals the truest ancient power of Gourmet-fu and crushes &!player!&!", self.randomizer),
             Boss ( 'Gourmet "The True God of Food" Hunter, "The Truer Final Form"', 58968, 15, 180, [
                 'pulls out three AK-47 and shoots &!player!& to death, yelling "This is my truester power!"',
                 "sends cross-omni-dimensional ballistic missile at &!player!&'s IRL home!",
@@ -208,7 +208,7 @@ class BossManager:
                 'yells, "I am the gods be damned admin of this game!? How am I losing!?"',
                 "realizes the food he was eating is actually poisoned!",
                 "chokes on the food he was eating!"
-            ], self.randomizer),
+            ], "Reveals the truester ancient power of Gourmet-fu and crushes &!player!&!", self.randomizer),
             Boss ( 'Gourmet "The True God of Food" Hunter, "The Truest Final Form"', 117936, 16, 195, [
                 'pulls out four AK-47 and shoots &!player!& to death, yelling "This is my truestest power!"',
                 "sends omnipresent god-like ballistic missile at &!player!&'s IRL home!",
@@ -229,14 +229,14 @@ class BossManager:
                 "realizes the food he was eating is actually poisoned!",
                 "chokes on the food he was eating!",
                 "starves since he doesn't have any food remaining!"
-            ], self.randomizer),
+            ], "Reveals the truestest ancient power of Gourmet-fu and crushes &!player!&!", self.randomizer),
             Boss ( 'Tom Nook', 235872, 17, 210, [
                 'gives you a house and makes you pay for it!"',
                 "calls you trash and says he can't accept trash!",
                 "forces his children to work for him while he takes a vacation!",
                 "adds five million bells to your debt!",
                 "identifies your white shark as sea bass.",
-                "forces you to watch Isabell's morning routine.",
+                "forces you to watch Isabelle's morning routine.",
                 "snookers &!player!&!"
             ], [
                 "decides &!player!& must shop at re-tail instead, but &!player!& shops where &!player!& fucking wants to.",
@@ -249,7 +249,7 @@ class BossManager:
                 "tries to claim his right to shoot &!player!& if he wants to, but &!player!& shoots him first!",
                 "starts his isekai adventure with a little help from &!player!&!",
                 "time travels and gets Resetti'd!"
-            ], self.randomizer)
+            ], "calls over Isabelle who calls over the **Doom Guy** who shoots &!player!& to death!", self.randomizer)
         ]
 
         self.event_bosses = {
@@ -266,7 +266,7 @@ class BossManager:
                 "send their navigator **Bänu** to steal all &!player!&'s money, but she navigates herself into a trashcan!",
                 "send their cook **Qubanijw Aäbhu** to kick &!player!&, but he gets kicked out of the discord server!",
                 "try escape with **Debjt**'s magnificent cola cannon motor."
-            ], self.randomizer),
+            ], "attack &!player!& as a crew, revealing the true power of OKAMA!", self.randomizer),
             "megalodon" : Boss( "Megalodon", 323, 5, 10, [
                 "sneaks up on &!player!& and takes a bite!",
                 "__dun dun dun dun__'s behind &!player!&!",
@@ -277,16 +277,16 @@ class BossManager:
                 'embarasses itself!"',
                 'realizes it is on sweet water and panics!"',
                 'takes a drink if sea water!"'
-            ], self.randomizer)
+            ], "__dun dun dun dun dun dun dun dun dun__'s behind &!player!& and takes a bite!", self.randomizer)
         }
 
         self.missing_no = Boss( "MissingNo", 999999999, 999999999, 1, [
             "kills &!player!&!"
         ], [
             'is confused!"',
-        ], self.randomizer)
+        ], "wins!", self.randomizer)
 
-    def fight_boss(self, boss_id, player_name, attack_method, power, special_attack_text=None):
+    def fight_boss(self, boss_id, player_name, attack_method, power, special_attack_text=None, finishing_move_text=None):
         hit_points = 3
         reward = 0
         if boss_id.__class__ == int:
@@ -297,15 +297,29 @@ class BossManager:
             lives = boss.lives
             msg = "**" + player_name + "** begins a fight against the **" + boss.name + "**!"
             difficulty = boss.difficulty
+            player_finisher_remaining = True
+            special_attack_used = False
             while True:
                 attack = attack_method(power)
+                if player_finisher_remaining and finishing_move_text and lives == 1:
+                    player_finisher_remaining = False
+                    special_attack_used = True
+                    attack = attack * 2
                 if special_attack_text:
                     rand = self.randomizer.randint(1,10)
                     if rand <= 2:
                         attack = attack * 2
-                        msg += "\n\n**" + player_name + "** uses their special attack; **" + special_attack_text + "**, unleashing power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
+                        if special_attack_used == True:
+                            special_attack_used = False
+                            msg += "\n\n**" + player_name + "** uses their special attack; **" + special_attack_text + "** in combination with their finishing move; **" + finishing_move_text + "**, unleashing power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
+                        else:
+                            msg += "\n\n**" + player_name + "** uses their special attack; **" + special_attack_text + "**, unleashing power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
                     else:
-                        msg += "\n\n**" + player_name + "** clashes power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
+                        if special_attack_used == True:
+                            special_attack_used = False
+                            msg += "\n\n**" + player_name + "** uses their finishing move; **" + finishing_move_text + "**, unleashing power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
+                        else:
+                            msg += "\n\n**" + player_name + "** clashes power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
                 else:
                     msg += "\n\n**" + player_name + "** clashes power level of **" + str(attack) + "** against difficulty rating of **" + str(difficulty) + "**!"
                 if attack >= difficulty:
@@ -317,10 +331,12 @@ class BossManager:
                         break
                 else:
                     hit_points = hit_points - 1
-                    msg += "\n" + boss.get_attack(player_name) + " - **" + player_name + "** has **" + str(hit_points) + "** hit points remaining!"
                     if hit_points == 0:
+                        msg += "\n" + boss.get_finisher(player_name) + " - **" + player_name + "** has **" + str(hit_points) + "** hit points remaining!"
                         msg += "\n\n**" + player_name + "** has been defeated by **" + boss.name + "**!"
                         break
+                    else: 
+                        msg += "\n" + boss.get_attack(player_name) + " - **" + player_name + "** has **" + str(hit_points) + "** hit points remaining!"
         else:
             msg = "**" + player_name + "** has defeated all the available bosses!"
         return msg, reward
@@ -338,17 +354,21 @@ class BossManager:
         return boss
 
 class Boss:
-    def __init__(self, name, difficulty, lives, reward, attacks, hits, randomizer):
+    def __init__(self, name, difficulty, lives, reward, attacks, hits, finisher, randomizer):
         self.name = name
         self.difficulty = difficulty
         self.lives = lives
         self.reward = reward
         self.attacks = attacks
         self.hits = hits
+        self.finisher = finisher
         self.randomizer = randomizer
     
     def get_attack(self, player_name):
         return self._solve_sentence(self.randomizer.choice(self.attacks), player_name)
+    
+    def get_finisher(self, player_name):
+        return self._solve_sentence(self.finisher, player_name)
     
     def get_hit(self, player_name):
         return self._solve_sentence(self.randomizer.choice(self.hits), player_name)

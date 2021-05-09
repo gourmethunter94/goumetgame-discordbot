@@ -18,10 +18,11 @@ class Database:
             ("bosses", "user_id TEXT, last_attempt TEXT, tier INTEGER"),
             ("extra_plays", "user_id TEXT, amount INTEGER"),
             ("nicknames", "user_id TEXT, nickname TEXT"),
-            ("users", "user_id TEXT, last_played TEXT, plays_left INTEGER, currency INTEGER, power INTEGER")
+            ("users", "user_id TEXT, last_played TEXT, plays_left INTEGER, currency INTEGER, power INTEGER"),
+            ("finisher", "user_id TEXT, finisher_name TEXT")
         ]
         self.write_tables(logger)
-    
+
     def write_tables(self, logger):
         if not os.path.isfile(self.address):
             logger("Creating database: " + self.address, "5", "Game Database", "System")
@@ -273,3 +274,25 @@ class Database:
                     currency = str(row[3])
                     message += "\n      **" + name + "** with **" + power + "** power and **" + currency + "** monies."
         return message
+
+    def get_finisher(self, player):
+        with closing(sqlite3.connect(self.address)) as connection:
+            with closing(connection.cursor()) as cursor:
+                cursor.execute('SELECT * FROM finisher WHERE user_id="'+player+'"')
+                data = cursor.fetchone()
+                if data:
+                    return data[1]
+                else:
+                    return None
+
+    def update_finisher(self, player, finisher_name):
+        if self.get_finisher(player):
+            with closing(sqlite3.connect(self.address)) as connection:
+                with closing(connection.cursor()) as cursor:
+                    cursor.execute('UPDATE finisher SET finisher_name="' + finisher_name + '" WHERE user_id="'+player+'"')
+                    connection.commit()
+        else:
+            with closing(sqlite3.connect(self.address)) as connection:
+                with closing(connection.cursor()) as cursor:
+                    cursor.execute('INSERT INTO finisher VALUES("' + player + '","' + finisher_name + '")')
+                    connection.commit()

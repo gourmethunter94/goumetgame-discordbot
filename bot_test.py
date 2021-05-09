@@ -25,12 +25,17 @@ async def run_help(client):
     command = input("> ")
     if command == "quit" or command == "exit":
         delete_databases()
-        exit()
-    await client.on_message(Message("3", "Manual Tester", "!gg " + command))
+        return False
+    elif command == "help" or command == "!gg":
+        await client.on_message(Message("3", "Manual Tester", "!gg"))
+    else:
+        await client.on_message(Message("3", "Manual Tester", "!gg " + command))
+    return True
     
 def run(token, client):
     while True:
-        asyncio.run(run_help(client))
+        if not asyncio.run(run_help(client)):
+            break
 
 async def send_message(message, channel):
     print(message.replace("*", ""))

@@ -106,7 +106,8 @@ class EventManager:
             special_attack_text = special[1]
         else:
             special_attack_text = None
-        msg, reward = self.game.bosses.fight_boss(boss_name, nickname, self.game._attack_roll, power, special_attack_text)
+        finishing_move_text = self.game.get_finisher(player)
+        msg, reward = self.game.bosses.fight_boss(boss_name, nickname, self.game._attack_roll, power, special_attack_text, finishing_move_text)
         message += msg + "\n\n"
 
         if reward > 0:

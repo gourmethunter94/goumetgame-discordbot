@@ -44,7 +44,8 @@ class GourmetGame(discord.Client):
             "start":self._start,
             "chances":self._chances,
             "leaderboard":self._leaderboard,
-            "repository":self._repository
+            "repository":self._repository,
+            "finisher":self._finisher
         }
         self.silent_logging = silent_logging
         self.ready = False
@@ -74,6 +75,26 @@ class GourmetGame(discord.Client):
     async def _play(self, commands, message):
         self.log("Command executed: play", message.author.id, message.author.display_name, self.response_level)
         await self._send_message(self.game_instance.play(str(message.author.id), message.author.display_name), message.channel)
+
+    async def _finisher(self, commands, message):
+        player = self.game_instance.get_player(str(message.author.id))
+        player_id = player[0]
+        power = player[4]
+        if power >= 400:
+            msg = ""
+            try:
+                finisher_name = ' '.join(commands[1:]).replace(";", "").replace("'", "").replace('"', "")
+                if finisher_name and len(finisher_name) > 0:
+                    self.log("Command executed: finisher, subcommand: " + finisher_name, message.author.id, message.author.display_name, self.response_level)
+                    self.game_instance.update_finisher(player_id, finisher_name)
+                    msg = "**" + message.author.display_name + "**'s finishing move was renamed to **" + finisher_name + "**!"
+                else:
+                    msg = 'Entered finishing move name is too short!'
+            except:
+                msg = 'Write "!gg" for help with commands!'
+            await self._send_message(msg, message.channel)
+        else:
+            await self._send_message('**' + message.author.display_name + '** needs power level of at least 400!', message.channel)
 
     async def _adventure(self, commands, message):
         self.log("Command executed: adventure", message.author.id, message.author.display_name, self.response_level)
@@ -126,7 +147,7 @@ class GourmetGame(discord.Client):
                 msg = 'Write "!gg" for help with commands!'
             await self._send_message(msg, message.channel)
         else:
-            await self._send_message('**' + message.author.display_name + '** needs power level of atleast 50!', message.channel)
+            await self._send_message('**' + message.author.display_name + '** needs power level of at least 50!', message.channel)
 
     async def _boss(self, commands, message):
         self.log("Command executed: boss", message.author.id, message.author.display_name, self.response_level)
@@ -237,6 +258,7 @@ class GourmetGame(discord.Client):
                                     "\n" +
                                     "       status - shows your current status in the game!\n" +
                                     "       special - use to name your special attack (_ex. !gg special Turbo Attack_). Special attack is unlocked after reaching 50 power.\n" +
+                                    "       finisher - use to name your finishing move (_ex. !gg finisher Pile Driver_). Finishing move is unlocked after reaching 400 power.\n" +
                                     "       chances - lists pull chances.\n" +
                                     "       leaderboard - lists out players sorted by power.\n" +
                                     "\n" +
