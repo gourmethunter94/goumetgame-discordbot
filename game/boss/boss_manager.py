@@ -125,7 +125,7 @@ class BossManager:
                 "fucking dies of food poisoning because his burgers were actually syrgers.",
                 "cries tears of burger sauce."
             ], "eats 40 burger babies while his henchmen make &!player!& watch as he eats!", self.randomizer),
-            Boss( "Pepsi Max Can", 2888, 9, 30, [
+            Boss( "Pepsi Max Can", 3249, 8, 30, [
                 'sprays pepsi all over &!player!&!',
                 'summons 13 legions of pepsi demons to attack &!player!&!',
                 "shuts down &!player!&'s computer!",
@@ -136,7 +136,7 @@ class BossManager:
                 "gives &!player!& life time pepsi max ban.",
                 "buys RP with 20€."
             ], ' yells "Pep Pu Si Ma Ku Si!" and sprays Pepsi all over &!player!&!', self.randomizer),
-            Boss( "Gourmet Hunter", 3686, 10, 50, [
+            Boss( "Gourmet Hunter", 4061, 8, 50, [
                 'uses the power of eternal gourmet grace; "Gourmet Thousand Year Fever!"',
                 "summons the gourmet legions to destroy &!player!&!",
                 "eats some buff food and gains 15 million attack power and hits &!player!& on the face.",
@@ -147,7 +147,7 @@ class BossManager:
                 "tries to sustain his gourmet power with filthy cheeseburger but it's not enough.",
                 "eats baked beans."
             ], "Reveals the ancient power of Gourmet-fu and crushes &!player!&!", self.randomizer),
-            Boss( 'Gourmet "Ultra Mega Special" Hunter', 7372, 12, 90, [
+            Boss( 'Gourmet "Ultra Mega Special" Hunter', 11058, 8, 90, [
                 'uses the power of the true eternal gourmet grace; "Gourmet Ten Thousand Year Mega Fever!"',
                 "summons the 13 gourmet legions to destroy &!player!&!",
                 "eats some deluxe buff food and gains 155 million attack power and hits &!player!& on the face ten times.",
@@ -158,7 +158,7 @@ class BossManager:
                 "tries to sustain his gourmet power with extremely filthy cheeseburger but it's not nearly enough.",
                 "eats ten cans of baked beans."
             ], "Reveals the true ancient power of Gourmet-fu and crushes &!player!&!", self.randomizer),
-            Boss ( 'Gourmet "The True God of Food" Hunter', 14742, 13, 125, [
+            Boss ( 'Gourmet "The True God of Food" Hunter', 23955, 8, 125, [
                 'pulls out an AK-47 and shoots &!player!& to death, yelling "This is my true power!"',
                 "sends cross-continential ballistic missile at &!player!&'s IRL home!",
                 "breaks &!player!& like a kit-kat bar!",
@@ -173,7 +173,7 @@ class BossManager:
                 "goes to China to eat some dog meat, but is put to prison since that is illegal now!",
                 'yells, "I am the gods be damned admin of this game!? How am I losing!?"'
             ], "Reveals the truer ancient power of Gourmet-fu and crushes &!player!&!", self.randomizer),
-            Boss ( 'Gourmet "The True God of Food" Hunter, "The True Final Form"', 29484, 14, 165, [
+            Boss ( 'Gourmet "The True God of Food" Hunter, "The True Final Form"', 51597, 8, 165, [
                 'pulls out two AK-47 and shoots &!player!& to death, yelling "This is my truest power!"',
                 "sends cross-dimensional ballistic missile at &!player!&'s IRL home!",
                 "breaks &!player!& like a kit-kat bar!",
@@ -190,7 +190,7 @@ class BossManager:
                 'yells, "I am the gods be damned admin of this game!? How am I losing!?"',
                 "realizes the food he was eating is actually poisoned!"
             ], "Reveals the truest ancient power of Gourmet-fu and crushes &!player!&!", self.randomizer),
-            Boss ( 'Gourmet "The True God of Food" Hunter, "The Truer Final Form"', 58968, 15, 180, [
+            Boss ( 'Gourmet "The True God of Food" Hunter, "The Truer Final Form"', 105036, 8, 180, [
                 'pulls out three AK-47 and shoots &!player!& to death, yelling "This is my truester power!"',
                 "sends cross-omni-dimensional ballistic missile at &!player!&'s IRL home!",
                 "breaks &!player!& like a kit-kat bar!",
@@ -209,7 +209,7 @@ class BossManager:
                 "realizes the food he was eating is actually poisoned!",
                 "chokes on the food he was eating!"
             ], "Reveals the truester ancient power of Gourmet-fu and crushes &!player!&!", self.randomizer),
-            Boss ( 'Gourmet "The True God of Food" Hunter, "The Truest Final Form"', 117936, 16, 195, [
+            Boss ( 'Gourmet "The True God of Food" Hunter, "The Truest Final Form"', 212284, 8, 195, [
                 'pulls out four AK-47 and shoots &!player!& to death, yelling "This is my truestest power!"',
                 "sends omnipresent god-like ballistic missile at &!player!&'s IRL home!",
                 "breaks &!player!& like a kit-kat bar!",
@@ -230,7 +230,7 @@ class BossManager:
                 "chokes on the food he was eating!",
                 "starves since he doesn't have any food remaining!"
             ], "Reveals the truestest ancient power of Gourmet-fu and crushes &!player!&!", self.randomizer),
-            Boss ( 'Tom Nook', 235872, 17, 210, [
+            Boss ( 'Tom Nook', 426043, 8, 210, [
                 'gives you a house and makes you pay for it!"',
                 "calls you trash and says he can't accept trash!",
                 "forces his children to work for him while he takes a vacation!",
