@@ -43,4 +43,5 @@ if __name__ == "__main__":
     asyncio.run(client.on_message(Message("3", "Manual Tester", "!gg pull all")))
     asyncio.run(client.on_message(Message("3", "Manual Tester", "!gg boss")))
     asyncio.run(client.on_message(Message("3", "Manual Tester", "!gg status")))
+    delete_databases()
     
