@@ -163,7 +163,7 @@ class Database:
         if self.get_player(player) == None:
             with closing(sqlite3.connect(self.address)) as connection:
                 with closing(connection.cursor()) as cursor:
-                    cursor.execute('INSERT INTO users VALUES ("' + player + '","' + self._get_date() + '", ' + str(self.plays_per_day) + ', 0, 6)')
+                    cursor.execute('INSERT INTO users VALUES ("' + player + '","' + self._get_date() + '", ' + str(self.plays_per_day) + ', 0, 7)')
                     connection.commit()
                     return True
         else:
