@@ -261,12 +261,16 @@ class BossManager:
             ], [
                 'panic as their ship starts to sink!"',
                 'just stand and watch as **Ribt Rbit Xgioowe** does a silly dance with chopstick stuck on his nose.',
+                "send their captain **Nibjwt S. Kyddt** to punch &!player!&, but he falls in to the ocean and drowns.",
+                "send their swordsman **Eieibiä Miei** to slice &!player!&, but his sword is made out of sausages.",
+                "send their navigator **Bänu** to steal all &!player!&'s money, but she navigates herself into a trashcan!",
+                "send their cook **Qubanijw Aäbhu** to kick &!player!&, but he gets kicked out of the discord server!",
                 "try escape with **Debjt**'s magnificent cola cannon motor."
             ], self.randomizer),
             "megalodon" : Boss( "Megalodon", 323, 5, 10, [
                 "sneaks up on &!player!& and takes a bite!",
                 "__dun dun dun dun__'s behind &!player!&!",
-                "grows feet and turns into a street sharko to punch &!player!& in the face!",
+                "grows feet and turns into a street shark to punch &!player!& in the face!",
                 "rams the ship &!player!& is on!",
             ], [
                 'takes heavy damage!"',

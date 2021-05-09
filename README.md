@@ -12,7 +12,8 @@ settings.txt file structure
 ```
 [Discord Bot Token]
 [Admin 1 Discord unique id],[Admin 2 Discord unique id], ..., [Admin n Discord unique id]
-[Database path]
+[Game Database path]
+[Logger Database Path]
 ```
 
 database tables
@@ -25,6 +26,11 @@ CREATE TABLE bosses (user_id TEXT, last_attempt TEXT, tier INTEGER);
 CREATE TABLE extra_plays(user_id TEXT, amount INTEGER);
 CREATE TABLE nicknames (user_id TEXT, nickname TEXT);
 CREATE TABLE users (user_id TEXT, last_played TEXT, plays_left INTEGER, currency INTEGER, power INTEGER);
+```
+
+Logger database tables
+```
+CREATE TABLE log_entry(user_id TEXT, user_name TEXT, time TEXT, log_level TEXT, log_entry TEXT);
 ```
 
 dependencies (*should be installable with pip*)

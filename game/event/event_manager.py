@@ -8,7 +8,8 @@ class EventManager:
             "weekend":self._weekend,
             "personaltrainer":self._personaltrainer,
             "mysteriousmap":self._mysterious_map,
-            "bosstoken":self._boss_token
+            "bosstoken":self._boss_token,
+            "yesterday":self._yesterday
         }
         self._trainers = [
             ["Pekka Pouta", ["shares wisdom of the ancients with &!player!&.", "teaches &!player!& how the tell the weather.", "teaches some sick dance moves to &!player!&."], "his"],
@@ -28,6 +29,9 @@ class EventManager:
         else:
             return "The event: **" + event_name + "** has not yet been implemented!", 0, 0, []
     
+    def _yesterday(self, player, nickname):
+        return "**" + nickname + "** gains the power of yesterday's gaming that was lost due to some unknown reason.\n**mysteriousmap** triggers an adventure.\n**bosstoken** triggers a bossfight.", 0, 3, ["mysteriousmap", "bosstoken"]
+
     def _boss_token(self, player, nickname):
         message, currency = self.game.play_bosses(player, nickname, boss_token=True)
         return message, currency, 0, []

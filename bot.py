@@ -5,6 +5,7 @@ import sys
 import threading
 import time
 import datetime
+import game.logger as logger # pylint: disable=no-name-in-module,import-error
 
 arguments = sys.argv
 
@@ -15,6 +16,7 @@ ADMINS = []
 for line in lines[1].split(","):
     ADMINS.append(int(line))
 DATABASE_ADDRESS = lines[2]
+LOG_ADDRESS = lines[3]
 
 class MyClient(discord.Client):
 
@@ -37,36 +39,45 @@ class MyClient(discord.Client):
             "repository":self._repository
         }
         self.ready = False
+        self.log_styling = "               "
+        self.log_styling_long = "                                             "
+        self.response_level = "Response"
+        self.system_level = "System"
+        self.date = datetime.datetime
+        self.logger = logger.Logger(LOG_ADDRESS)
 
     async def _start(self, commands, message):
         if self.game_instance.get_player(str(message.author.id)) == None:
             self.game_instance.add_player(str(message.author.id))
-            print("*** " + "Added " + str(message.author.id) + " to the game.")
+            self.log("Player added to the game", message.author.id, message.author.display_name, self.response_level)
             await self._send_message('**' + message.author.display_name + '** is now added to the game!', message.channel)
         else:
             await self._send_message('**' + message.author.display_name + '** was already added to the game!', message.channel)
 
     async def _play(self, commands, message):
-        print("*** " + str(message.author.id) + " played the game.")
+        self.log("Command executed: play", message.author.id, message.author.display_name, self.response_level)
         await self._send_message(self.game_instance.play(str(message.author.id), message.author.display_name), message.channel)
 
     async def _adventure(self, commands, message):
-        print("*** " + str(message.author.id) + " went to an adventure.")
+        self.log("Command executed: adventure", message.author.id, message.author.display_name, self.response_level)
         msg = self.game_instance.play_adventure(str(message.author.id), message.author.display_name)
         await self._send_message(msg, message.channel)
 
     async def _pull(self, commands, message):
-        print("*** " + str(message.author.id) + " pulled.")
         if len(commands) >= 2 and commands[1] == "all":
+            self.log("Command executed: pull, subcommand: all", message.author.id, message.author.display_name, self.response_level)
             msg = self.game_instance.roll(str(message.author.id), message.author.display_name, True)
         else:
+            self.log("Command executed: pull", message.author.id, message.author.display_name, self.response_level)
             msg = self.game_instance.roll(str(message.author.id), message.author.display_name, False)
         await self._send_message(msg, message.channel)
 
     async def _status(self, commands, message):
+        self.log("Command executed: status", message.author.id, message.author.display_name, self.response_level)
         await self._send_message(self.game_instance.status(str(message.author.id), message.author.display_name), message.channel)
 
     async def _chances(self, commands, message):
+        self.log("Command executed: chances", message.author.id, message.author.display_name, self.response_level)
         await self._send_message('**Chances when pulling!**\n' +
                                    '    :star:; 52%\n' +
                                    '    :star::star:; 28%\n' +
@@ -77,6 +88,7 @@ class MyClient(discord.Client):
                                    message.channel)
 
     async def _leaderboard(self, commands, message):
+        self.log("Command executed: leaderboard", message.author.id, message.author.display_name, self.response_level)
         await self._send_message(self.game_instance.leaderboard(), message.channel)
 
     async def _special(self, commands, message):
@@ -88,9 +100,9 @@ class MyClient(discord.Client):
             try:
                 special_name = ' '.join(commands[1:]).replace(";", "").replace("'", "").replace('"', "")
                 if special_name and len(special_name) > 0:
+                    self.log("Command executed: special, subcommand: " + special_name, message.author.id, message.author.display_name, self.response_level)
                     self.game_instance.edit_special(player_id, special_name)
                     msg = "**" + message.author.display_name + "**'s special attack was renamed to **" + special_name + "**!"
-                    print("*** " + str(message.author.id) + " renamed their special attack.")
                 else:
                     msg = 'Entered special attack name is too short!'
             except:
@@ -100,36 +112,38 @@ class MyClient(discord.Client):
             await self._send_message('**' + message.author.display_name + '** needs power level of atleast 50!', message.channel)
 
     async def _boss(self, commands, message):
-        print("*** " + str(message.author.id) + " fought a boss.")
+        self.log("Command executed: boss", message.author.id, message.author.display_name, self.response_level)
         msg = self.game_instance.play_bosses(str(message.author.id), message.author.display_name)
         await self._send_message(msg, message.channel)
 
     async def _fish(self, commands, message):
-        print("*** " + str(message.author.id) + " went fishing.")
         msg = ""
         if len(commands) >= 2 and commands[1] == "all":
+            self.log("Command executed: fish, subcommand: all", message.author.id, message.author.display_name, self.response_level)
             msg = self.game_instance.fishing(str(message.author.id), message.author.display_name, True)
         else:
+            self.log("Command executed: fish", message.author.id, message.author.display_name, self.response_level)
             msg = self.game_instance.fishing(str(message.author.id), message.author.display_name, False)
         await self._send_message(msg, message.channel)
 
     async def _event(self, commands, message):
         if len(commands) == 1:
+            self.log("Command executed: event", message.author.id, message.author.display_name, self.response_level)
             msg = self.game_instance.events(str(message.author.id), message.author.display_name)
             await self._send_message(msg, message.channel)
         elif len(commands) >= 2:
             msg = self.game_instance.event(str(message.author.id), message.author.display_name, " ".join(commands[1:]))
-            print("*** " + str(message.author.id) + " activated event: " + " ".join(commands[1:]))
+            self.log("Command executed: event, subcommand: " + " ".join(commands[1:]), message.author.id, message.author.display_name, self.response_level)
             await self._send_message(msg, message.channel)
 
     async def _repository(self, commands, message):
         await self._send_message("https://github.com/ollikkarki/goumetgame-discordbot", message.channel)
 
     async def on_ready(self):
-        print("Initializing")
+        self.log("Initializing", 0, "on_ready", self.system_level)
         self.randomizer = random.Random()
         self.game_instance = game.Game(DATABASE_ADDRESS)
-        print('Logged on as', self.user)
+        self.log("Logged on as " + str(self.user), 0, "on_ready", self.system_level)
         self.ready = True
         if arguments:
             if (not "-silent" in arguments) and (not "-s" in arguments):
@@ -137,7 +151,7 @@ class MyClient(discord.Client):
 
     async def on_message(self, message):
         if not self.ready:
-            print("The client is not ready yet!")
+            self.log("System was not ready respond", 0, "on_ready", self.system_level)
             return
 
         if message.author == self.user:
@@ -166,7 +180,7 @@ class MyClient(discord.Client):
                             except:
                                 amount = 1
                             self.game_instance.add_plays(amount)
-                            print("****** " + "Added " + str(amount) + " plays to all players.")
+                            self.log("Command executed: addplays, subcommand: " + str(amount), 1, "Admin", self.response_level)
                             try:
                                 await self._announcement(str(' '.join(commands[2:])))
                             except:
@@ -175,7 +189,7 @@ class MyClient(discord.Client):
                             if len(commands) >= 2:
                                 if self.game_instance.add_event(str(" ".join(commands[1:]))):
                                     await self._announcement("Added **" + str(' '.join(commands[1:])) + "** event to all players!")
-                                    print("****** " + "Added " + str(" ".join(commands[1:])) + " event to all players.")
+                                    self.log("Command executed: addevent, subcommand: " + ' '.join(commands[1:]), 1, "Admin", self.response_level)
                                 else:
                                     await self._send_message('The event **' + str(' '.join(commands[1:])) +'** does not exist!', message.channel)
                         elif commands[0] == 'addcurrency':
@@ -185,7 +199,7 @@ class MyClient(discord.Client):
                             except:
                                 amount = 1
                             self.game_instance.add_currency(amount)
-                            print("****** " + "Added " + str(amount) + " currency to all players.")
+                            self.log("Command executed: addcurrency, subcommand: " + str(amount), 1, "Admin", self.response_level)
                             try:
                                 await self._announcement(str(' '.join(commands[2:])))
                             except:
@@ -232,12 +246,17 @@ class MyClient(discord.Client):
         for channel in self.get_all_channels():
             if channel.name == 'gourmet-game':
                 await channel.send(str(announcement))
+    
+    def log(self, message, log_id, log_name, log_level):
+        time = self.get_time()
+        msg = time + " : " + str(log_level) + self.log_styling[len(str(log_level)):]
+        msg += str(log_id) + " (" + str(log_name) + ") " + self.log_styling_long[len(str(log_id) + " (" + str(log_name) + ") "):]
+        msg += str(message)
+        self.logger.write_entry(log_id, log_name, time, log_level, message)
+        print(msg)
 
-date = datetime.datetime
-
-def get_date():
-    return str(date.now()).split(" ")[0]
+    def get_time(self):
+        return str(self.date.now()).split(".")[0]
 
 client = MyClient()
-
 client.run(TOKEN)
