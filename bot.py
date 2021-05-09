@@ -6,6 +6,13 @@ import threading
 import time
 import datetime
 import game.logger as logger # pylint: disable=no-name-in-module,import-error
+from shutil import copyfile
+import os
+
+def clean_line(path):
+    if path[-1] == "\n":
+        return path[:-1]
+    return path
 
 arguments = sys.argv
 
@@ -14,16 +21,14 @@ lines = settings_file.readlines()
 TOKEN = lines[0]
 ADMINS = []
 for line in lines[1].split(","):
-    ADMINS.append(int(line))
-if lines[2][-1] == "\n":
-    DATABASE_ADDRESS = lines[2][:-1]
-else: 
-    DATABASE_ADDRESS = lines[2]
-LOG_ADDRESS = lines[3]
+    ADMINS.append(int(clean_line(line)))
+DATABASE_ADDRESS = clean_line(lines[2])
+LOG_ADDRESS = clean_line(lines[3])
+BACKUP_PATH = clean_line(lines[4])
 
-class MyClient(discord.Client):
+class GourmetGame(discord.Client):
 
-    def __init__(self):
+    def __init__(self, database_address, log_address, run=None, send_message = None, silent_logging = False):
         super().__init__()
         self._unregistered_commands = ["start", "chances", "leaderboard", "repository"]
         self._commands = {
@@ -41,13 +46,22 @@ class MyClient(discord.Client):
             "leaderboard":self._leaderboard,
             "repository":self._repository
         }
+        self.silent_logging = silent_logging
         self.ready = False
         self.log_styling = "               "
         self.log_styling_long = "                                             "
         self.response_level = "Response"
         self.system_level = "System"
         self.date = datetime.datetime
-        self.logger = logger.Logger(LOG_ADDRESS)
+        self.logger_ready = False
+        self.logger = logger.Logger(log_address, self.log)
+        self.logger_ready = True
+        self.randomizer = random.Random()
+        self.game_instance = game.Game(database_address, self.log)
+        if run and send_message:
+            self.run = run
+            self._send_message = send_message
+        self.ready = True
 
     async def _start(self, commands, message):
         if self.game_instance.get_player(str(message.author.id)) == None:
@@ -144,13 +158,11 @@ class MyClient(discord.Client):
 
     async def on_ready(self):
         self.log("Initializing", 0, "on_ready", self.system_level)
-        self.randomizer = random.Random()
-        self.game_instance = game.Game(DATABASE_ADDRESS)
         self.log("Logged on as " + str(self.user), 0, "on_ready", self.system_level)
-        self.ready = True
         if arguments:
             if (not "-silent" in arguments) and (not "-s" in arguments):
                 await self._announcement("GourmetGame is Online!")
+        self.ready = True
 
     async def on_message(self, message):
         if not self.ready:
@@ -255,11 +267,22 @@ class MyClient(discord.Client):
         msg = time + " : " + str(log_level) + self.log_styling[len(str(log_level)):]
         msg += str(log_id) + " (" + str(log_name) + ") " + self.log_styling_long[len(str(log_id) + " (" + str(log_name) + ") "):]
         msg += str(message)
-        self.logger.write_entry(log_id, log_name, time, log_level, message)
-        print(msg)
+        if self.logger_ready:
+            self.logger.write_entry(log_id, log_name, time, log_level, message)
+        if not self.silent_logging:
+            print(msg)
 
     def get_time(self):
         return str(self.date.now()).split(".")[0]
 
-client = MyClient()
-client.run(TOKEN)
+
+def get_time():
+    return str(datetime.datetime.now()).split(".")[0]
+
+if __name__ == "__main__":
+    if os.path.isfile(DATABASE_ADDRESS):
+        copyfile(DATABASE_ADDRESS, BACKUP_PATH + (get_time() + "_Database.db").replace(" ", "_").replace(":", "-"))
+    if os.path.isfile(LOG_ADDRESS):
+        copyfile(LOG_ADDRESS, BACKUP_PATH + (get_time() + "_Log.db").replace(" ", "_").replace(":", "-"))
+    client = GourmetGame(DATABASE_ADDRESS, LOG_ADDRESS)
+    client.run(TOKEN)

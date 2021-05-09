@@ -14,6 +14,13 @@ settings.txt file structure
 [Admin 1 Discord unique id],[Admin 2 Discord unique id], ..., [Admin n Discord unique id]
 [Game Database path]
 [Logger Database Path]
+[Backup Folder Path]
+```
+
+test_settings.txt file structure
+```
+[Game Test Database path]
+[Logger Test Database Path]
 ```
 
 database tables

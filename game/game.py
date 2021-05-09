@@ -8,7 +8,7 @@ import game.database.database as database # pylint: disable=no-name-in-module,im
 
 class Game:
 
-    def __init__(self, addres):
+    def __init__(self, address, logger):
         self.date = datetime.datetime
         self.randomizer = random.Random()
         self.enemies = ["the Tarion", "a Chilled Bean", "the Aqua", "the Lin", "the Nepnep", "the Sawakoji", "the Karin", "the Konakon", "the Chiku", "that guy from mafia", "the Team Rocket", "the Gary Oak", "the Red", "the Alluusio", ",the P0k5", "a Prinny", "a Shroomish", "a Dude", "the Gourmet", "a Golbat", "the Hieno", "the Sana", "a Sanamon", "the Kumiperuna", "the Ukkounen!", "some League of Legends Tilt", "the Rito Freak", "the Riot Phreak", "the Gen Sin Simp Pact", "the Paimon", "an Emergency Food", "your mom", "a Magikarp", "the darkness", "the everlasting empty void of nothingness", "a Bulbasaur", "a Charmander", "a Squirtle", "Lominsan ERP Catgirl", "Bimbofication Gas of the Synth City"]
@@ -22,7 +22,7 @@ class Game:
         self.event_manager_instance = event_manager.EventManager(self.randomizer, self.bosses, self)
         self.fish = fishing_manager.FishingManager(self.randomizer)
         self.plays_per_day = 3
-        self.database = database.Database(addres, self.event_manager_instance, self._get_date)
+        self.database = database.Database(address, self.event_manager_instance, self.plays_per_day, self._get_date, logger)
 
     def get_player(self, player):
         return self.database.get_player(player)

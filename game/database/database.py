@@ -1,13 +1,41 @@
 
 import sqlite3
 from contextlib import closing
+import os
 
 class Database:
 
-    def __init__(self, address, event_manager_instance, _get_date):
+    def __init__(self, address, event_manager_instance, plays_per_day, _get_date, logger):
         self.address = address
         self.event_manager_instance = event_manager_instance
         self._get_date = _get_date
+        self.plays_per_day = plays_per_day
+        self.tables = [
+            ("adventures", "user_id TEXT, last_adventure TEXT"),
+            ("event", "user_id TEXT, event_name TEXT"),
+            ("fishing", "user_id TEXT, baits INTEGER"),
+            ("specials", "user_id TEXT, special_attack TEXT"),
+            ("bosses", "user_id TEXT, last_attempt TEXT, tier INTEGER"),
+            ("extra_plays", "user_id TEXT, amount INTEGER"),
+            ("nicknames", "user_id TEXT, nickname TEXT"),
+            ("users", "user_id TEXT, last_played TEXT, plays_left INTEGER, currency INTEGER, power INTEGER")
+        ]
+        self.write_tables(logger)
+    
+    def write_tables(self, logger):
+        if not os.path.isfile(self.address):
+            logger("Creating database: " + self.address, "5", "Game Database", "System")
+            for table in self.tables:
+                try:
+                    with closing(sqlite3.connect(self.address)) as connection:
+                        with closing(connection.cursor()) as cursor:
+                            cursor.execute("CREATE TABLE " + table[0] + "(" + table[1] + ");")
+                            connection.commit()
+                    logger("Building database table: " + table[0] + " - SUCCESS", "5", "Game Database", "System")
+                except:
+                    logger("Building database table: " + table[0] + " - FAILURE", "5", "Game Database", "System")
+        else:
+            logger("Database: " + self.address + " already exists", "5", "Game Database", "System")
 
     def get_player(self, player):
         with closing(sqlite3.connect(self.address)) as connection:
