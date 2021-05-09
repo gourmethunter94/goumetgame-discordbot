@@ -38,7 +38,7 @@ def run(token, client):
             break
 
 async def send_message(message, channel):
-    print(message.replace("*", "").replace(":start:", "*").replace("_", ""))
+    print(message.replace("*", "").replace(":star:", "*").replace("_", ""))
 
 def delete_databases():
     try:
