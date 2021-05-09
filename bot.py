@@ -257,8 +257,8 @@ class GourmetGame(discord.Client):
                                     "       event - lists events you have available! !gg event [event name] to play the event!\n" +
                                     "\n" +
                                     "       status - shows your current status in the game!\n" +
-                                    "       special - use to name your special attack (_ex. !gg special Turbo Attack_). Special attack is unlocked after reaching 50 power.\n" +
-                                    "       finisher - use to name your finishing move (_ex. !gg finisher Pile Driver_). Finishing move is unlocked after reaching 400 power.\n" +
+                                    "       special - use to name your special attack (_ex. !gg special Turbo Attack_). Special attack is unlocked after reaching 50 power. Ten percent chance to double power on every attack.\n" +
+                                    "       finisher - use to name your finishing move (_ex. !gg finisher Pile Driver_). Finishing move is unlocked after reaching 400 power. Once per fight doubles power when enemy has 1 hp.\n" +
                                     "       chances - lists pull chances.\n" +
                                     "       leaderboard - lists out players sorted by power.\n" +
                                     "\n" +
