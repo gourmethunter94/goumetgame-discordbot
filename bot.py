@@ -15,7 +15,10 @@ TOKEN = lines[0]
 ADMINS = []
 for line in lines[1].split(","):
     ADMINS.append(int(line))
-DATABASE_ADDRESS = lines[2]
+if lines[2][-1] == "\n":
+    DATABASE_ADDRESS = lines[2][:-1]
+else: 
+    DATABASE_ADDRESS = lines[2]
 LOG_ADDRESS = lines[3]
 
 class MyClient(discord.Client):
