@@ -54,5 +54,5 @@ def delete_databases():
 
 if __name__ == "__main__":
     delete_databases()
-    client = GourmetGame(TEST_DATABASE_ADDRESS, TEST_LOG_ADDRESS, run, send_message, silent_logging=True)
+    client = GourmetGame(TEST_DATABASE_ADDRESS, TEST_LOG_ADDRESS, run, send_message, silent_logging=True, testing=True)
     client.run(None, client)

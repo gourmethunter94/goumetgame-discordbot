@@ -9,7 +9,19 @@ class EventManager:
             "personaltrainer":self._personaltrainer,
             "mysteriousmap":self._mysterious_map,
             "bosstoken":self._boss_token,
-            "yesterday":self._yesterday
+            "yesterday":self._yesterday,
+            "monacocup":self._monacocup
+        }
+        self.event_explanations = {
+            "celebration":"Grants 1 extra play.",
+            "pirates":"DR 140 Boss fight.",
+            "megalodon":"DR 323 Boss fight.",
+            "weekend":"Grants a Celebration, 3 plays and 5 monies.",
+            "personaltrainer":"Chance to obtain monies. Amount of rewards is tied to power.",
+            "mysteriousmap":"Triggers an adventure.",
+            "bosstoken":"Triggers a boss fight.",
+            "yesterday":"Gives 3 plays, mysteriousmap and bosstoken.",
+            "monacocup":"Grants you currency rewards. The amount of reward is not tied to power."
         }
         self._trainers = [
             ["Pekka Pouta", ["shares wisdom of the ancients with &!player!&.", "teaches &!player!& how the tell the weather.", "teaches some sick dance moves to &!player!&."], "his"],
@@ -17,7 +29,8 @@ class EventManager:
             ["Tifa Lockhart", ["teaches &!player!& how to set up a nucklear bomb.", "gives &!player!& some home cooking and turns &!player!& into a fat boi.", "wants &!player!& to share their unemployment money."], "her"],
             ["Oyster Saucer", ["cooks some delicious oysters for &!player!&.", "doesn't know what to teach to &!player!&", "smells like umami."], "it's"],
             ["Rick Astley", ["is never gonna give &!player!& up!", "is never gonna let &!player!& go!", "is never gonna run around and desert &!player!&!"], "his"],
-            ["Rick Astley", ["is never gonna make &!player!& cry!", "is never gonna say goodbye!", "is never gonna tell a lie and hurt &!player!&!"], "his"]
+            ["Rick Astley", ["is never gonna make &!player!& cry!", "is never gonna say goodbye!", "is never gonna tell a lie and hurt &!player!&!"], "his"],
+            ["Kid", ["gives you a massage.", "is your lawyer in the court.", "saves you from life of debt."], "his"]
         ]
         self.boss_manager = boss_manager
         self.game = game
@@ -29,6 +42,22 @@ class EventManager:
         else:
             return "The event: **" + event_name + "** has not yet been implemented!", 0, 0, []
     
+    def _monacocup(self, player, nickname):
+        currency = 0
+        message = "The Monaco Cup has begun!\n"
+        for loop in range(1, 6):
+            if loop != 1 and self.randomizer.randint(1, 10) >= 9:
+                message += "\n**" + nickname + "** has been defeated in the Monacu Cup!"
+                break
+            elif loop < 5:
+                currency += 2
+                message += "\n**" + nickname + "** bakes delicious bread and has won round **" + str(loop) + "** of the Monaco Cup and earns **2** monies!"
+            if loop == 5:
+                currency += 3
+                message += "\n**" + nickname + "** has won the Monaco Cup and earns **3** monies!"
+        return message, currency, 0, []
+
+
     def _yesterday(self, player, nickname):
         return "**" + nickname + "** gains the power of yesterday's gaming that was lost due to some unknown reason.\n**mysteriousmap** triggers an adventure.\n**bosstoken** triggers a bossfight.", 0, 3, ["mysteriousmap", "bosstoken"]
 
@@ -129,7 +158,7 @@ class EventManager:
 
         for training in trainer[1]:
             message += "\n    **" + trainer[0] + "** " + training
-            tokens += len(str(self.randomizer.randint(1, int(10000 + pow(power/6, max(1,power/21))))))
+            tokens += len(str(self.randomizer.randint(1, int(10000 + pow(min(1900, power)/6, max(1,min(1900, power)/21))))))
             message += "\n    &!player!& has gained total of **" + str(tokens) + "** training tokens from the lessons.\n"
         
         for _ in range(0, tokens):

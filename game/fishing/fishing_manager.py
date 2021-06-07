@@ -33,7 +33,8 @@ class FishingManager:
         ]
         self.events = [
             Fish("Treasure Map", "Location of a pirate crew's treasure, propably protected by the pirates."),
-            Fish("Nautical Map", 'Nautical map with a note; "The feared Megalodon hunts on these seas!"')
+            Fish("Nautical Map", 'Nautical map with a note; "The feared Megalodon hunts on these seas!"'),
+            Fish("Blind Cave Tetra", "You can use this fish to cook a bread for the Monaco Cup!")
         ]
     
     def fish(self):
@@ -45,6 +46,8 @@ class FishingManager:
             fish = self.randomizer.choice(self.events)
             if fish.name == "Treasure Map":
                 events = ["pirates"]
+            elif fish.name == "Blind Cave Tetra":
+                events = ["monacocup"]
             elif fish.name == "Nautical Map":
                 events = ["megalodon"]
         elif rand  <= 14:

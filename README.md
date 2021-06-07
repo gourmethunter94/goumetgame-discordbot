@@ -6,6 +6,8 @@ The bot itself runs a game played through discord chat client.
 
 ## Set up
 
+Create **GourmetGamer** role that the bot can manage in your discord server.
+
 The project needs a ***settings.txt*** file in same location as ***bot.py***.
 
 settings.txt file structure

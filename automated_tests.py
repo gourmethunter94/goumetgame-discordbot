@@ -5,7 +5,7 @@ from manual_testing import delete_databases, run, send_message, TEST_DATABASE_AD
 
 if __name__ == "__main__":
     delete_databases()
-    client = GourmetGame(TEST_DATABASE_ADDRESS, TEST_LOG_ADDRESS, run, send_message, silent_logging=True)
+    client = GourmetGame(TEST_DATABASE_ADDRESS, TEST_LOG_ADDRESS, run, send_message, silent_logging=True, testing=True)
     asyncio.run(client.on_message(Message("3", "Manual Tester", "!gg chances")))
     asyncio.run(client.on_message(Message("3", "Manual Tester", "!gg start")))
     asyncio.run(client.on_message(Message("3", "Manual Tester", "!gg leaderboard")))

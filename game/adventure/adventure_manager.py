@@ -122,8 +122,7 @@ class AdventureManager:
             else:
                 attack = roll_method(power)
                 difficulty = (victories + 1) * max(1, int((victories+1)/2)) * 9 - 5
-                if (power < 200 and power >= 4 * difficulty) or (power < 400 and power >= 2.5 * difficulty) or (power < 600 and power >= difficulty) or (power >= 600 and power >= difficulty * 0.5):
-                    message += "\n**" + player_name + "** is too powerful and swats away any opposition with ease!"
+                if (power < 200 and power >= 4 * difficulty) or (power >= 200 and power < 400 and power >= 2.5 * difficulty) or (power >= 400 and power < 600 and power >= difficulty) or (power >= 600 and power >= difficulty * 0.5) or (power >= 900 and power >= difficulty * 0.4) or (power >= 1300 and power >= difficulty * 0.35) or (power >= 1700 and power >= difficulty * 0.29) or (power >= 2200 and power >= difficulty * 0.21) or (power >= 2800 and power >= difficulty * 0.15):
                     defeated_status = False
                 else:
                     if special_attack_text:

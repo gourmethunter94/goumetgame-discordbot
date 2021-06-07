@@ -28,7 +28,7 @@ BACKUP_PATH = clean_line(lines[4])
 
 class GourmetGame(discord.Client):
 
-    def __init__(self, database_address, log_address, run=None, send_message = None, silent_logging = False):
+    def __init__(self, database_address, log_address, run=None, send_message = None, silent_logging = False, testing = False):
         super().__init__()
         self._unregistered_commands = ["start", "chances", "leaderboard", "repository"]
         self._commands = {
@@ -45,7 +45,9 @@ class GourmetGame(discord.Client):
             "chances":self._chances,
             "leaderboard":self._leaderboard,
             "repository":self._repository,
-            "finisher":self._finisher
+            "finisher":self._finisher,
+            "subscribe":self._subscribe,
+            "unsubscribe":self._unsubscribe
         }
         self.silent_logging = silent_logging
         self.ready = False
@@ -63,12 +65,14 @@ class GourmetGame(discord.Client):
             self.run = run
             self._send_message = send_message
         self.ready = True
+        self.testing = testing
+        self.re_connection = False
 
     async def _start(self, commands, message):
         if self.game_instance.get_player(str(message.author.id)) == None:
             self.game_instance.add_player(str(message.author.id))
             self.log("Player added to the game", message.author.id, message.author.display_name, self.response_level)
-            await self._send_message('**' + message.author.display_name + '** is now added to the game!', message.channel)
+            await self._send_message('**' + message.author.display_name + '** is now added to the game!\nIf you want a chat alert when the game is online use command **!gg subscribe**.', message.channel)
         else:
             await self._send_message('**' + message.author.display_name + '** was already added to the game!', message.channel)
 
@@ -121,7 +125,7 @@ class GourmetGame(discord.Client):
                                    '    :star::star:; 28%\n' +
                                    '    :star::star::star:; 12%\n' +
                                    '    :star::star::star::star:; 5%\n' +
-                                   '    :star::star::star::star::star:; 3%' +
+                                   '    :star::star::star::star::star:; 3%\n' +
                                    'Average power increase per pull **1.79**.',
                                    message.channel)
 
@@ -175,13 +179,29 @@ class GourmetGame(discord.Client):
             await self._send_message(msg, message.channel)
 
     async def _repository(self, commands, message):
+        self.log("Command executed: repository", message.author.id, message.author.display_name, self.response_level)
         await self._send_message("https://github.com/ollikkarki/goumetgame-discordbot", message.channel)
+
+    async def _subscribe(self, commands, message):
+        if not self.testing:
+            self.log("Command executed: subscribe", message.author.id, message.author.display_name, self.response_level)
+            gourmet_gamer = discord.utils.get(message.guild.roles, name='GourmetGamer')
+            await message.author.add_roles(gourmet_gamer)
+            await self._send_message("**" + message.author.display_name + "** is now subscribed to GourmetGame pings.", message.channel)
+
+    async def _unsubscribe(self, commands, message):
+        if not self.testing:
+            self.log("Command executed: unsubscribe", message.author.id, message.author.display_name, self.response_level)
+            gourmet_gamer = discord.utils.get(message.guild.roles, name='GourmetGamer')
+            await message.author.remove_roles(gourmet_gamer)
+            await self._send_message("**" + message.author.display_name + "** is now unsubscribed from GourmetGame pings.", message.channel)
 
     async def on_ready(self):
         self.log("Initializing", 0, "on_ready", self.system_level)
         self.log("Logged on as " + str(self.user), 0, "on_ready", self.system_level)
         if arguments:
-            if (not "-silent" in arguments) and (not "-s" in arguments):
+            if (not "-silent" in arguments) and (not "-s" in arguments) and not self.re_connection:
+                self.re_connection = True
                 await self._announcement("GourmetGame is Online!")
         self.ready = True
 
@@ -262,6 +282,9 @@ class GourmetGame(discord.Client):
                                     "       chances - lists pull chances.\n" +
                                     "       leaderboard - lists out players sorted by power.\n" +
                                     "\n" +
+                                    "       subscribe - gives you GourmetGamer role so you can hear bot pings. **Does not work through private messages!**\n" +
+                                    "       unsubscribe - removes GourmetGamer role from you so you can't hear bot pings. **Does not work through private messages!**\n" +
+                                    "\n" +
                                     "       repository - sends a link to the game's github repository\n\n" +
                                     "**Warning: whenever you do an action in game, your current nickname is stored and may be displayed in other servers with access to the game.**", message.channel)
 
@@ -282,7 +305,11 @@ class GourmetGame(discord.Client):
     async def _announcement(self, announcement):
         for channel in self.get_all_channels():
             if channel.name == 'gourmet-game':
-                await channel.send(str(announcement))
+                if self.get_hour() >= 9:
+                    gourmet_gamer = discord.utils.get(channel.guild.roles, name='GourmetGamer')
+                    await channel.send("{}\n".format(gourmet_gamer.mention) + str(announcement))
+                else:
+                    await channel.send(str(announcement))
     
     def log(self, message, log_id, log_name, log_level):
         time = self.get_time()
@@ -296,6 +323,9 @@ class GourmetGame(discord.Client):
 
     def get_time(self):
         return str(self.date.now()).split(".")[0]
+
+    def get_hour(self):
+        return int(self.get_time().split(" ")[1].split(":")[0])
 
 
 def get_time():

@@ -90,8 +90,8 @@ class Game:
     def edit_special(self, player, special_attack):
         self.database.edit_special(player, special_attack)
 
-    def _add_event(self, player, event_name):
-        self.database._add_event(player, event_name)
+    def _add_event(self, player, event_name, amount=1):
+        self.database._add_event(player, event_name, amount)
     
     def get_events(self, player):
         return self.database.get_events(player)
@@ -136,11 +136,12 @@ class Game:
         self.database.update_finisher(player, finisher_name)
 
     def events(self, player, nickname):
-        message = "**" + nickname + "** has the following events:\n"
+        message = "**" + nickname + "** has the following events:"
         events = self.get_events(player)
         if len(list(events)) > 0:
             for event in list(events):
-                message += "    **" + str(events.get(event)) + "** instances of **" + event + "** event!\n"
+                message += "\n    **" + str(events.get(event)) + "** instances of **" + event + "** event!"
+                message += " _" + self.event_manager_instance.event_explanations.get(event) + "_"
         else:
             message = "**" + nickname + "** has no events available!"
         return message
@@ -284,7 +285,7 @@ class Game:
                 if chance <= 2:
                     message += "\n**" + nickname + "** uses special attack: **" + special[1] + "**!"
                     attack = attack * 2
-            reward = max(1, int(1.295*len(str(attack)))) + self.randomizer.randint(0, 1) + max(0, self.randomizer.randint(0, max(1,int(len(str(power))/2))))
+            reward = max(1, int(1.295*len(str(attack)))) + self.randomizer.randint(0, 2) + max(0, self.randomizer.randint(0, max(1,int(len(str(power))/2)))) + int(power / 92)
             message += "\n**" + nickname + "** impressed **" + enemy.replace("an ", "the ").replace("a ", "the ") + "** with power level of **" + str(attack) + "**!"
             currency += reward
             message += "\n**" + nickname + "** gains **" + str(reward) + "** monies as reward. Current total monies **" + str(currency) + "**!"
@@ -356,21 +357,29 @@ class Game:
                 plays_left = int(player_data[2])
             power = int(player_data[4])
             base_power = power
+            gains = {}
             for _ in range(0, rolls):
                 item = self._roll()
                 value = self._get_item_value(item)
                 power += value
                 if roll_all == False:
                     message = "**" + nickname + "** spent **5** monies rolling and got... ** " + item + "** ( "
+                    for _ in range(0, value):
+                        message += ":star:"
+                    message += " )"
+                    message += "\nThe **" + item + "** increases **" + nickname + "'s** power by **" + str(value) + "**!"
                 else:
-                    message += "\n**" + nickname + "** rolled and got... ** " + item + "** ( "
-                for _ in range(0, value):
-                    message += ":star:"
-                message += " )"
-                message += "\nThe **" + item + "** increases **" + nickname + "'s** power by **" + str(value) + "**!"
-                if roll_all:
-                    message += "\n"
+                    if gains.get(item):
+                        gains.update({item:(gains.get(item)+1)})
+                    else:
+                        gains.update({item:1})
             if roll_all:
+                for item in list(gains):
+                    message += "    **" + str(gains.get(item)) + "** of ** " + item + "** ( "
+                    value = self._get_item_value(item)
+                    for _ in range(0, value):
+                        message += ":star:"
+                    message += " )\n"
                 message += "\n**" + nickname + "**'s power increased by **" + str((power-base_power)) + "** in total!"
                 average = (power-base_power) / rolls
                 rate = average - 1.79
@@ -448,7 +457,8 @@ class Game:
         message = "**" + nickname + "** has **" + str(plays_left) + "** plays left today, **" + str(power) + "** power and **" + str(currency) + "** monies!" + adventure_message + boss_message
         message += "\n**" + str(extra_play_amount) + "** extra plays left!"
         message += "\n**" + str(baits_amount) + "** fishing baits left!"
-        message += "\n" + self.get_time_until_reset()
+        message += "\n\n" + self.events(player, nickname)
+        message += "\n\n" + self.get_time_until_reset()
         return message
 
     def fishing(self, player, nickname, fish_all=False):
@@ -471,15 +481,15 @@ class Game:
 
             if fish_all:
                 fish_amount = fishing_data[1]
+                gains = {}
 
             for fishing in range(0, fish_amount):
                 fish, money_instance, plays_instance, event = self.fish.fish()
-
-                message += "**" + nickname + "** has caught something while fishing!\nIt is a " + fish
                 
                 amount_fished += 1
 
                 if not fish_all:
+                    message += "**" + nickname + "** has caught something while fishing!\nIt is a " + fish
                     if money_instance > 0:
                         message += "\nThe fish is worth **" + str(money_instance) + "** monies!"
                     if plays_instance > 0:
@@ -487,13 +497,15 @@ class Game:
                     if money_instance == 0 and plays_instance == 0:
                         message += "\nThe fish is not worth anything!"
                     message += "\n**" + nickname + "** has **" + str((int(fishing_data[1]) - amount_fished)) + "** baits remaining!"
+                else:
+                    if gains.get(fish):
+                        gains.update({fish:(gains.get(fish)+1)})
+                    else:
+                        gains.update({fish:1})
 
                 money += money_instance
                 plays += plays_instance
                 events = events + event
-
-                if fish_all:
-                    message += "\n\n"
 
             last_played = player_data[1]
             if last_played != self._get_date():
@@ -504,13 +516,27 @@ class Game:
             power = int(player_data[4])
 
             if fish_all:
-                message += "**" + nickname + "** got **" + str(money) + "** monies and **" + str(plays) + "** plays while fishing!"
-
-            if len(events) > 0:
-                message += "\n\n**" + nickname + "** gains access to following events from fishing:"
-                for event in events:
-                    self._add_event(str(player), event)
-                    message += "\n    Access to **" + event + "** event"
+                message = "**" + nickname + "** goes fishing and catches: \n" + message 
+                for fish in list(gains):
+                    message += "**" + str(gains.get(fish)) + "** of " + fish + "\n"
+                message += "\n**" + nickname + "** got **" + str(money) + "** monies and **" + str(plays) + "** plays while fishing!"
+                if len(events) > 0:
+                    message += "\n\n**" + nickname + "** gains access to following events from fishing:"
+                    events_dict = {}
+                    for event in events:
+                        if events_dict.get(event):
+                            events_dict.update({event:(events_dict.get(event)+1)})
+                        else:
+                            events_dict.update({event:1})
+                    for event in list(events_dict):
+                        self._add_event(str(player), event, events_dict.get(event))
+                        message += "\n    Access to **" + str(events_dict.get(event)) + "** of **" + event + "** event"
+            else:
+                if len(events) > 0:
+                    message += "\n\n**" + nickname + "** gains access to following events from fishing:"
+                    for event in events:
+                        self._add_event(str(player), event)
+                        message += "\n    Access to **" + event + "** event"
 
             self.update_player(player, plays_left, currency, power)
             self.edit_fishing(player, (int(fishing_data[1]) - fish_amount))

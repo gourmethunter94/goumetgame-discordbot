@@ -183,10 +183,11 @@ class Database:
                     cursor.execute('UPDATE specials SET special_attack="' + str(special_attack) + '" WHERE user_id="' + player + '"')
                     connection.commit()
 
-    def _add_event(self, player, event_name):
+    def _add_event(self, player, event_name, amount = 1):
         with closing(sqlite3.connect(self.address)) as connection:
             with closing(connection.cursor()) as cursor:
-                cursor.execute('INSERT INTO event VALUES ("' + str(player) + '", "' + event_name.lower() + '")')
+                for _ in range(0, amount):
+                    cursor.execute('INSERT INTO event VALUES ("' + str(player) + '", "' + event_name.lower() + '")')
                 connection.commit()
     
     def get_events(self, player):
